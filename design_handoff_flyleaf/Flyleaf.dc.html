@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/base.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/components/components.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/styles.css">
+  <script src="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/_ds_bundle.js"></script>
+  <style>
+    html, body { margin:0; background:var(--bg-page, #000000); }
+    a { color:#d7003a; text-decoration:none; }
+    a:hover { color:#ffffff; }
+    /* Today's wall scrollbar — hairline track, crimson thumb, hard edges */
+    #daily-wall { scrollbar-width:thin; scrollbar-color:#d4fe01 transparent; }
+    #daily-wall::-webkit-scrollbar { height:6px; }
+    #daily-wall::-webkit-scrollbar-track { background:transparent; }
+    #daily-wall::-webkit-scrollbar-thumb { background:#d4fe01; border-radius:0; }
+    /* Mobile polish */
+    @media (max-width:640px){
+      [data-m="content"]{ padding:20px 16px 40px !important; }
+      [data-m="masthead"]{ gap:18px !important; }
+      [data-m="masthead-right"]{ align-items:flex-start !important; text-align:left !important; }
+      [data-m="intro"]{ white-space:normal !important; }
+      [data-m="prompt-panel"]{ padding:18px 16px !important; }
+      [data-m="prompt-title"]{ font-size:20px !important; }
+      [data-m="prompt-label"]{ white-space:nowrap !important; }
+      [data-m="countdown"]{ text-align:left !important; }
+      [data-m="loved-card"]{ flex:0 0 56% !important; }
+      [data-m="archive-grid"]{ grid-template-columns:repeat(auto-fill,minmax(104px,1fr)) !important; }
+    }
+  </style>
+</helmet>
+<div data-screen-label="Daily Sketch" style="min-height:100vh;background:var(--bg-page);color:var(--text-body);font-family:var(--font-mono);font-size:12px;line-height:1.7">
+
+  <!-- Telemetry spine -->
+  <div style="position:fixed;left:0;top:0;bottom:0;width:40px;z-index:50;border-right:1px solid var(--border);background:var(--base);display:flex;flex-direction:column;align-items:center;padding:28px 0 14px;gap:14px">
+    <div style="flex-shrink:0">
+      <img src="assets/flywheel-white.svg" alt="Flyleaf" style="width:30px;height:auto;display:{{ logoWhiteDisplay }}">
+      <img src="assets/flywheel-black.svg" alt="Flyleaf" style="width:30px;height:auto;display:{{ logoBlackDisplay }}">
+    </div>
+    <div style="writing-mode:vertical-rl;display:flex;align-items:center;gap:14px;font-family:var(--font-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:8px 3px">
+      <span style="color:var(--text-bright);font-weight:700;letter-spacing:4px">Flyleaf</span>
+      <span style="color:var(--faint)">·</span>
+      <span style="color:var(--label)">Prompt {{ dailyNo }}</span>
+      <span style="color:var(--faint)">·</span>
+      <span style="color:var(--label)">{{ spineDate }}</span>
+    </div>
+    <div style="margin-top:auto"></div>
+    <button onClick="{{ toggleTheme }}" title="Toggle theme" style="width:18px;height:18px;border:1px solid var(--border);background:transparent;color:var(--label);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0;font-family:var(--font-mono);flex-shrink:0" style-hover="border-color:var(--accent);color:var(--accent)">◐</button>
+    <div style="writing-mode:vertical-rl;font-family:var(--font-mono);font-size:8px;letter-spacing:2px;color:var(--faint)">V0.3.0</div>
+  </div>
+
+  <div style="padding-left:40px">
+    <div data-m="content" style="max-width:1100px;margin:0 auto;padding:26px 36px 48px">
+
+      <!-- Masthead -->
+      <div data-m="masthead" style="display:flex;justify-content:space-between;gap:28px;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:22px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column">
+          <div style="font-family:var(--font-title);font-weight:700;font-size:28px;letter-spacing:2px;color:var(--text-bright);text-transform:uppercase;line-height:1.05">Flyleaf</div>
+          <img src="assets/subline-lime.svg" alt="Make Art Everyday" style="width:181px;height:auto;display:block;margin-top:2px">
+          <div data-m="intro" style="font-size:10px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;margin-top:12px;line-height:1.7;white-space:nowrap">Daily Sketch. One prompt a day. One image per artist.<br>Show your love with an emoji.</div>
+        </div>
+        <div data-m="masthead-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right">
+          <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap"><span style="color:var(--label)">{{ memberCount }} members</span> <span style="color:#d7003a">● {{ onlineCount }}</span> <span style="color:var(--label)">online</span></span>
+          <div onClick="{{ openMyProfile }}" title="{{ myTitle }}" style="display:flex;align-items:stretch;gap:9px;cursor:{{ myCursor }};text-align:left;border:1px solid var(--border);padding:8px">
+            <span style="width:52px;align-self:stretch;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000000;border:1px solid var(--border);background:{{ myAvatarBg }}">{{ myInitials }}</span>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;gap:2px">
+              <span style="font-size:10px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap">{{ myHandle }}</span>
+              <span style="font-size:9px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap">{{ myRole }}</span>
+              <sc-if value="{{ showStreak }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-bright);border:1px solid var(--text-bright);padding:4px 8px;white-space:nowrap">Streak {{ streakCount }} ◆ Best {{ bestCount }}</span>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's prompt -->
+      <div class="ls-ticks" data-m="prompt-panel" style="padding:24px 26px;margin-top:24px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+          <div style="min-width:0">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+              <span class="ls-label" data-m="prompt-label" style="color:var(--accent)">Today's prompt · {{ dailyNo }}</span>
+              <span style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;white-space:nowrap">{{ promptSourceLabel }}</span>
+            </div>
+            <div data-m="prompt-title" style="font-family:var(--font-title);font-weight:700;font-size:26px;letter-spacing:1px;color:var(--text-bright);text-transform:uppercase;line-height:1.1">{{ dailyTitle }}</div>
+            <div style="font-size:10px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;margin-top:8px">{{ dailyRule }}</div>
+          </div>
+          <div data-m="countdown" style="text-align:right;flex-shrink:0">
+            <div style="font-size:14px;color:#d7003a;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">{{ countdown }}</div>
+            <div style="font-size:8px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px">{{ dailyCount }} posted today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Most loved (everyone, ranked by reactions) -->
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 2px 14px;gap:16px;flex-wrap:wrap">
+        <span class="ls-label" style="color:var(--faint)">Today's wall · everyone <span onClick="{{ swipeWall }}" style="color:var(--accent);opacity:.85;cursor:pointer;user-select:none" style-hover="opacity:1">· swipe →</span></span>
+        <span style="font-size:8px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase">Random snapshot</span>
+      </div>
+      <div id="daily-wall" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch">
+        <sc-for list="{{ lovedStrip }}" as="lv" hint-placeholder-count="5">
+          <div data-m="loved-card" style="flex:0 0 190px;scroll-snap-align:start;border:1px solid var(--border);background:var(--panel)">
+            <div onClick="{{ lv.open }}" title="View full size" style="aspect-ratio:1/1;background:{{ lv.bg }};border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .12s;overflow:hidden" style-hover="opacity:.88"></div>
+            <div style="padding:9px 11px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:9px;color:var(--text-bright);letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ lv.name }}</span>
+              <span style="margin-left:auto;font-size:9px;color:var(--label);letter-spacing:.5px;white-space:nowrap;flex-shrink:0">{{ lv.hearts }}</span>
+            </div>
+          </div>
+        </sc-for>
+        <a href="Browse.dc.html" title="Browse everyone" style="flex:0 0 130px;scroll-snap-align:start;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;color:var(--label);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;line-height:1.8" style-hover="border-color:var(--accent);color:var(--accent)">Browse everyone →</a>
+      </div>
+
+      <!-- Your circle -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:28px 2px 14px;gap:16px;flex-wrap:wrap">
+        <span class="ls-label" style="color:var(--faint)">Crew · {{ circleCount }} posted</span>
+        <sc-if value="{{ canPostDaily }}" hint-placeholder-val="{{ false }}">
+          <button class="ls-btn ls-btn--primary ls-btn--sm" style="background:#d7003a;border-color:#d7003a;color:#ffffff" onClick="{{ postDaily }}">+ Post today's sketch</button>
+        </sc-if>
+        <sc-if value="{{ dailyPosted }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:5px 10px">◆ You've posted today</span>
+        </sc-if>
+      </div>
+      <div data-m="circle-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px">
+        <sc-for list="{{ dailyGrid }}" as="d" hint-placeholder-count="3">
+          <div data-m="wall-card" style="border:1px solid {{ d.cardBorder }};background:var(--panel)">
+            <div onClick="{{ d.open }}" title="View full size" style="aspect-ratio:1/1;background:{{ d.bg }};border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .12s;position:relative;overflow:hidden" style-hover="opacity:.88"></div>
+            <div style="padding:12px 14px">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:2px">
+                <span onClick="{{ d.profile }}" title="View sketchbook" style="width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#000000;border:1px solid var(--border);background:{{ d.avColor }};cursor:pointer">{{ d.initials }}</span>
+                <span onClick="{{ d.profile }}" title="View sketchbook" style="font-size:10px;color:var(--text-bright);letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer" style-hover="color:#d7003a">{{ d.name }}</span>
+                <sc-if value="{{ d.mine }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--accent)">Yours</span></sc-if>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:11px">
+                <sc-for list="{{ d.reax }}" as="rx" hint-placeholder-count="2">
+                  <button onClick="{{ rx.toggle }}" title="{{ rx.who }}" style="display:flex;align-items:center;gap:5px;border:1px solid {{ rx.border }};background:{{ rx.bg }};padding:3px 8px;cursor:pointer;font-family:var(--font-mono);font-size:13px;line-height:1" style-hover="border-color:var(--label)">{{ rx.emo }}<span style="font-size:10px;letter-spacing:1px;color:{{ rx.ctColor }}">{{ rx.count }}</span></button>
+                </sc-for>
+                <sc-if value="{{ d.canReact }}" hint-placeholder-val="{{ false }}">
+                  <span data-pop="reax" style="position:relative;display:inline-block">
+                    <button onClick="{{ d.addClick }}" title="Add reaction" style="border:1px dashed var(--border);background:transparent;color:var(--label);padding:4px 9px;cursor:pointer;font-family:var(--font-mono);font-size:13px;line-height:1" style-hover="border-color:var(--accent);color:var(--accent)">☺&#8202;+</button>
+                    <sc-if value="{{ d.pickerOpen }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute;z-index:60;bottom:100%;left:0;margin-bottom:6px;background:var(--panel-hi);border:1px solid var(--accent);padding:8px;display:flex;gap:4px;flex-wrap:wrap;width:214px">
+                        <sc-for list="{{ d.emojiOptions }}" as="eo" hint-placeholder-count="8">
+                          <button onClick="{{ eo.pick }}" style="background:transparent;border:none;cursor:pointer;font-size:18px;line-height:1;padding:4px" style-hover="background:var(--panel)">{{ eo.emo }}</button>
+                        </sc-for>
+                      </span>
+                    </sc-if>
+                  </span>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- Archive of earlier prompts -->
+      <div class="ls-label" style="margin:36px 0 4px">Earlier prompts</div>
+      <div style="font-size:9px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">The streak is the point, not the drawing. Emoji reactions carry over as hearts.</div>
+      <sc-for list="{{ dailyArchive }}" as="da" hint-placeholder-count="2">
+        <div style="border-top:1px solid var(--border-soft);padding:16px 0">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase">Prompt {{ da.no }} · {{ da.title }}</span>
+            <span style="font-size:8px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase">{{ da.when }} · {{ da.count }} posted</span>
+          </div>
+          <div data-m="archive-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px">
+            <sc-for list="{{ da.subs }}" as="s" hint-placeholder-count="3">
+              <div onClick="{{ s.open }}" title="View full size" style="position:relative;aspect-ratio:1/1;background:{{ s.bg }};border:1px solid var(--border);cursor:pointer;transition:border-color .12s;overflow:hidden" style-hover="border-color:var(--accent)">
+                <span style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);padding:4px 7px;display:flex;justify-content:space-between;align-items:center;gap:6px;z-index:1">
+                  <span onClick="{{ s.profile }}" title="View sketchbook" style="font-size:8px;color:#ffffff;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer" style-hover="color:#d7003a">{{ s.name }}</span>
+                  <span style="font-size:8px;color:var(--accent);letter-spacing:.5px;white-space:nowrap;flex-shrink:0">{{ s.reaxCount }}</span>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+
+      <!-- Lightbox -->
+      <sc-if value="{{ showLightbox }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeLightbox }}" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px">
+          <div style="width:min(78vh,82vw);height:min(78vh,82vw);border:1px solid var(--accent);background:{{ lbBg }};position:relative;overflow:hidden"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;width:min(78vh,82vw);max-width:100%">
+            <span style="font-size:11px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase">{{ lbName }} <span style="color:var(--accent)">{{ lbHearts }}</span></span>
+            <span style="font-size:9px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase">{{ lbPrompt }} · {{ lbWhen }}</span>
+          </div>
+          <button onClick="{{ closeLightbox }}" style="position:fixed;top:24px;right:28px;font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:8px 12px;cursor:pointer" style-hover="border-color:var(--accent);color:var(--accent)">✕ Close</button>
+        </div>
+      </sc-if>
+
+      <!-- Footer -->
+      <div style="margin-top:40px;border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:8px;color:var(--faint);letter-spacing:2px;text-transform:uppercase">© Losq Studios</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#dce5f9&quot;,&quot;options&quot;:[&quot;#d7003a&quot;,&quot;#d4fe01&quot;,&quot;#dce5f9&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;guest&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;promptSource&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;AI&quot;,&quot;options&quot;:[&quot;AI&quot;,&quot;Human&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  // ── Static data ────────────────────────────────────────────────
+  // Members: index 0 is always the current user ("You").
+  MEMBERS = [
+    { name:'You',      color:'#a8823f', initials:'YO' },
+    { name:'Mara K.',  color:'#5a7a9c', initials:'MK' },
+    { name:'Devon R.', color:'#a85a5a', initials:'DR' },
+    { name:'Sol',      color:'#5c8a5c', initials:'SO' },
+    { name:'Ines T.',  color:'#8a6a9c', initials:'IT' },
+    { name:'Kit V.',   color:'#9c8a5a', initials:'KV' },
+  ];
+  EMOJI_CHOICES = ['🔥','👀','💡','🙌','❤️','😂','🎯','🤙','🖌️','💀'];
+
+  // Community posts outside your circle (server-ranked sample at scale).
+  GLOBAL_TODAY = [
+    { name:'@inkwell',    bg:'riso',   hearts:61 },
+    { name:'@plumline',   bg:'deep2',  hearts:48 },
+    { name:'@nightbus',   bg:'rain',   hearts:37 },
+    { name:'@softserve',  bg:'harbor', hearts:29 },
+    { name:'@tallgrass',  bg:'forest', hearts:18 },
+    { name:'@ochre',      bg:'shape',  hearts:9 },
+    { name:'@birdseye',   bg:'light2', hearts:4 },
+  ];
+
+  // Placeholder artwork gradients, keyed by name (used until real uploads exist).
+  GRADIENTS = {
+    light:'linear-gradient(160deg,#0d1622,#24354a 55%,#b8a878 70%,#0a0f16)',
+    light2:'linear-gradient(135deg,#050a12,#16283c 60%,#dce5f9 78%,#050a12)',
+    forest:'linear-gradient(135deg,#1a2418,#2e3a22 60%,#0d130a)',
+    deep:'linear-gradient(135deg,#0a1f2e,#13405a 60%,#06141d)',
+    deep2:'linear-gradient(160deg,#06141d,#1d5570 65%,#0a1f2e)',
+    feline:'linear-gradient(135deg,#2a1a2e,#5a3a6a 60%,#14091a)',
+    harbor:'linear-gradient(135deg,#141a1e,#3c4a52 60%,#dce5f9 85%,#0d1114)',
+    walk:'linear-gradient(135deg,#171717,#333333 60%,#0f0f0f)',
+    shape:'linear-gradient(135deg,#1a1408,#4a3a12 60%,#100c05)',
+    riso:'linear-gradient(135deg,#e8407a,#f0a020 62%,#f5efe0)',
+    rain:'linear-gradient(160deg,#0d1014,#2a3440 55%,#8a97a8 75%,#0b0e12)',
+  };
+
+  // Real sample images referenced by bg keyword in PROMPTS below.
+  SAMPLE_IMAGES = {
+    REAL:  { src:'uploads/10_hipHopShark_C-1beb6015.jpg', frame:'#0a0a0a' },
+    REAL2: { src:'uploads/IMG_1936.jpeg',                 frame:'#f4f2ec' },
+  };
+
+  // Prompt feed, newest first. sub: { a: member index, bg: gradient key or
+  // SAMPLE_IMAGES key, img?: dataURL upload, r: reactions {emoji: [names]}, mine? }
+  PROMPTS = [
+    { no:'0187', title:'Lighthouse interior', rule:'One light source · the lamp room counts', when:'Today',
+      subs:[ {a:1,bg:'light',r:{}}, {a:2,bg:'light2',r:{}}, {a:3,bg:'harbor',r:{}}, {a:4,bg:'deep',r:{}}, {a:5,bg:'feline',r:{}}, {a:2,bg:'rain',r:{}}, {a:3,bg:'deep2',r:{}} ] },
+    { no:'0186', title:'Crowd in rain', rule:'Umbrellas optional, misery mandatory', when:'Yesterday',
+      subs:[ {a:1,bg:'rain',r:{}}, {a:4,bg:'walk',r:{}}, {a:0,bg:'REAL',r:{}}, {a:3,bg:'deep',r:{}} ] },
+    { no:'0185', title:'Something in a jar', rule:'No faces', when:'2 days ago',
+      subs:[ {a:2,bg:'feline',r:{}}, {a:5,bg:'shape',r:{}}, {a:1,bg:'riso',r:{}} ] },
+    { no:'0184', title:'Empty stage', rule:'One prop only', when:'3 days ago',
+      subs:[ {a:3,bg:'deep2',r:{}}, {a:0,bg:'REAL2',r:{}}, {a:2,bg:'forest',r:{}} ] },
+  ];
+
+  // ── UI state (mutated directly + refresh(); submissions live in PROMPTS) ──
+  ui = { picker:null, theme:'dark', lightbox:null };
+
+  // ── Small helpers ──────────────────────────────────────────────
+  refresh(){ this.forceUpdate(); }
+  isGuest(){ return !!this.props.guest; }
+  pad2(n){ return String(n).padStart(2,'0'); }
+
+  // Resolve what a submission looks like: uploaded image, sample image, or gradient.
+  artFor(sub){
+    if(sub.img) return '#0a0a0a url("'+sub.img+'") center / contain no-repeat';
+    const sample=this.SAMPLE_IMAGES[sub.bg];
+    if(sample) return sample.frame+' url("'+sample.src+'") center / contain no-repeat';
+    return this.GRADIENTS[sub.bg]||sub.bg||'var(--panel-hi)';
+  }
+
+  // Deterministic fake reactions so the demo wall isn't empty.
+  seedReactions(n){
+    const r={};
+    const opts=['🔥','👀','💡','🙌','❤️','🖌️'];
+    const names=['Mara K.','Sol','Devon R.','Ines T.','Kit V.'];
+    r[opts[n%opts.length]]=names.slice(0,(n%3)+1);
+    if(n%2===0) r[opts[(n+2)%opts.length]]=names.slice(0,(n%2)+1);
+    return r;
+  }
+  reactionTooltip(names){ return names.length<=3 ? names.join(', ') : names.slice(0,2).join(', ')+' +'+(names.length-2); }
+  heartCount(r){ return Object.keys(r||{}).reduce((sum,k)=>sum+((r[k]&&r[k].length)||0),0); }
+  hasPostedToday(prompt){ return prompt.subs.some(s=>s.a===0); }
+
+  // ── Lifecycle ──────────────────────────────────────────────────
+  componentDidMount(){
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+    this.applyAccent();
+    // Seed demo reactions on any submission that has none.
+    this.PROMPTS.forEach((p,pi)=>p.subs.forEach((s,si)=>{ if(!s.r||!Object.keys(s.r).length) s.r=this.seedReactions(pi*3+si+2); }));
+    // 1s tick drives the countdown.
+    this._tick=setInterval(()=>this.refresh(),1000);
+    // Close the emoji picker on any click outside it.
+    this._docClick=(e)=>{ if(this.ui.picker!==null && !e.target.closest('[data-pop="reax"]')){ this.ui.picker=null; this.refresh(); } };
+    document.addEventListener('click', this._docClick);
+    this.refresh();
+  }
+  componentWillUnmount(){
+    if(this._tick) clearInterval(this._tick);
+    if(this._docClick) document.removeEventListener('click', this._docClick);
+  }
+  componentDidUpdate(){ this.applyAccent(); }
+
+  // Push the accent prop into the design-system CSS vars.
+  applyAccent(){
+    const accent=((this.props.accent)||'#d7003a').toLowerCase();
+    const darkInk = accent!=='#d7003a'; // lime/periwinkle need dark ink on accent fills
+    const b=document.body;
+    b.style.setProperty('--accent', accent);
+    b.style.setProperty('--accent-ink', darkInk?'#1a1a1a':'#ffffff');
+    b.style.setProperty('--accent-dim', accent);
+    b.style.setProperty('--focus-ring', accent);
+    b.style.setProperty('--status-live', accent);
+  }
+
+  // ── Reactions ──────────────────────────────────────────────────
+  toggleReaction(sub, emoji){
+    if(this.isGuest()) return;
+    if(!sub.r) sub.r={};
+    const me='You'; const list=sub.r[emoji]||[];
+    if(list.includes(me)){
+      const next=list.filter(x=>x!==me);
+      if(next.length) sub.r[emoji]=next; else delete sub.r[emoji];
+    } else {
+      sub.r[emoji]=[...list, me];
+    }
+    this.ui.picker=null; this.refresh();
+  }
+
+  // Template values for one submission's reaction row + picker.
+  reactionVals(sub, key){
+    if(!sub.r) sub.r={};
+    const active=Object.keys(sub.r).filter(e=>sub.r[e]&&sub.r[e].length);
+    const reax=active.map(e=>{
+      const names=sub.r[e]; const mine=names.includes('You');
+      return {
+        emo:e, count:String(names.length), who:this.reactionTooltip(names),
+        border:mine?'var(--accent)':'var(--border)',
+        bg:mine?'color-mix(in srgb, var(--accent) 14%, transparent)':'var(--panel-hi)',
+        ctColor:mine?'var(--accent)':'var(--label)',
+        toggle:()=>this.toggleReaction(sub,e),
+      };
+    });
+    return {
+      reax,
+      canReact:!this.isGuest(),
+      pickerOpen:this.ui.picker===key,
+      addClick:(ev)=>{ ev.stopPropagation(); this.ui.picker=(this.ui.picker===key?null:key); this.refresh(); },
+      emojiOptions:this.EMOJI_CHOICES.map(em=>({ emo:em, pick:()=>this.toggleReaction(sub,em) })),
+    };
+  }
+
+  // ── Actions ────────────────────────────────────────────────────
+  countdownStr(){
+    const now=new Date(); const mid=new Date(now); mid.setHours(24,0,0,0);
+    let s=Math.max(0,Math.floor((mid-now)/1000));
+    return 'T-'+this.pad2(Math.floor(s/3600))+':'+this.pad2(Math.floor((s%3600)/60))+':'+this.pad2(s%60);
+  }
+
+  openLightbox(sub, name, prompt, when, hearts){
+    this.ui.lightbox={ bg:this.artFor(sub), name, prompt, when, hearts:'♥ '+hearts };
+    this.refresh();
+  }
+
+  postToday(){
+    if(this.isGuest()) return;
+    const today=this.PROMPTS[0];
+    if(this.hasPostedToday(today)) return;
+    this.pickImage((src)=>{ today.subs.unshift({ a:0, img:src, r:{}, mine:true }); this.refresh(); });
+  }
+
+  // Open a native file picker and return the chosen image as a dataURL.
+  pickImage(cb){
+    const inp=document.createElement('input');
+    inp.type='file'; inp.accept='image/*'; inp.style.cssText='position:fixed;left:-9999px;top:0;';
+    document.body.appendChild(inp);
+    inp.onchange=()=>{
+      const f=inp.files&&inp.files[0];
+      if(f&&f.type.startsWith('image/')){ const r=new FileReader(); r.onload=(ev)=>cb(ev.target.result); r.readAsDataURL(f); }
+      inp.remove();
+    };
+    inp.click();
+  }
+
+  swipeWall(){
+    const w=document.getElementById('daily-wall'); if(!w) return;
+    const card=w.firstElementChild;
+    const step=card?card.getBoundingClientRect().width+14:w.clientWidth*0.9;
+    const atEnd=w.scrollLeft+w.clientWidth>=w.scrollWidth-4;
+    w.scrollTo({ left:atEnd?0:w.scrollLeft+step, behavior:'smooth' });
+  }
+
+  // ── Render values ──────────────────────────────────────────────
+  renderVals(){
+    const ui=this.ui;
+    const guest=this.isGuest();
+    const today=this.PROMPTS[0];
+    const onlineCount=4;
+
+    // Streak: consecutive prompts (newest first) with a post from "You".
+    let streak=0; for(const p of this.PROMPTS){ if(this.hasPostedToday(p)) streak++; else break; }
+    let best=0, run=0; for(const p of this.PROMPTS){ if(this.hasPostedToday(p)){ run++; if(run>best) best=run; } else run=0; }
+
+    const dailyGrid=today.subs.map((s,idx)=>{
+      const m=this.MEMBERS[s.a];
+      return {
+        bg:this.artFor(s),
+        avColor:m.color, initials:m.initials, name:m.name,
+        mine:!!s.mine, cardBorder:s.mine?'var(--accent)':'var(--border)',
+        profile:()=>{ window.location.href='User Sketchbook.dc.html?u='+s.a; },
+        open:()=>this.openLightbox(s, m.name, 'Prompt '+today.no+' · '+today.title, 'Today', this.heartCount(s.r)),
+        ...this.reactionVals(s,'daily-today-'+idx),
+      };
+    });
+
+    // Wall strip: random snapshot of everyone's posts (stable per session).
+    const promptLabel='Prompt '+today.no+' · '+today.title;
+    if(!this._wallSeed) this._wallSeed=Math.floor(Math.random()*1e6);
+    const seed=this._wallSeed;
+    const lovedPool=[
+      ...this.GLOBAL_TODAY.map(g=>({ bg:this.GRADIENTS[g.bg]||g.bg, name:g.name, hearts:g.hearts })),
+      ...today.subs.map(s=>({ bg:this.artFor(s), name:this.MEMBERS[s.a].name, hearts:this.heartCount(s.r) })),
+    ];
+    const lovedStrip=lovedPool
+      .map((e,i)=>({ e, k:Math.sin(seed+i*127.1)*43758.5453%1 }))
+      .sort((a,b)=>a.k-b.k).map(x=>x.e).slice(0,10).map((e,i)=>({
+      rank:this.pad2(i+1), bg:e.bg, name:e.name, hearts:'♥ '+e.hearts,
+      open:()=>{ this.ui.lightbox={ bg:e.bg, name:e.name, prompt:promptLabel, when:'Today', hearts:'♥ '+e.hearts }; this.refresh(); },
+    }));
+
+    const dailyArchive=this.PROMPTS.slice(1).map(p=>({
+      no:p.no, title:p.title, when:p.when, count:this.pad2(p.subs.length),
+      subs:p.subs.map(s=>{
+        const name=this.MEMBERS[s.a].name;
+        return {
+          bg:this.artFor(s),
+          name, reaxCount:'♥ '+this.heartCount(s.r),
+          profile:(ev)=>{ ev.stopPropagation(); window.location.href='User Sketchbook.dc.html?u='+s.a; },
+          open:()=>this.openLightbox(s, name, 'Prompt '+p.no+' · '+p.title, p.when, this.heartCount(s.r)),
+        };
+      }),
+    }));
+
+    return {
+      // Masthead / spine
+      onlineCount:this.pad2(onlineCount),
+      memberCount:this.pad2(this.MEMBERS.length),
+      showStreak:!guest,
+      streakCount:this.pad2(streak),
+      bestCount:this.pad2(Math.max(best,streak)),
+      spineDate:(()=>{ const d=new Date(); const mo=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()]; return this.pad2(d.getDate())+' '+mo+' '+d.getFullYear(); })(),
+      logoWhiteDisplay:ui.theme==='dark'?'block':'none',
+      logoBlackDisplay:ui.theme==='dark'?'none':'block',
+      myHandle:guest?'Guest':'@mouse',
+      myRole:guest?'Read only':'Space Ninja 👽',
+      myAvatarBg:guest?'var(--panel-hi)':'#a8823f url("uploads/MouseIcon_184.jpg") center / cover no-repeat',
+      myInitials:guest?'?':'',
+      myCursor:guest?'default':'pointer',
+      myTitle:guest?'Guest · read only':'Your sketchbook',
+      openMyProfile:()=>{ if(!guest) window.location.href='User Sketchbook.dc.html?u=0'; },
+      toggleTheme:()=>{
+        ui.theme=ui.theme==='dark'?'light':'dark';
+        [document.documentElement,document.body].forEach(el=>{ el.classList.toggle('light',ui.theme==='light'); el.classList.toggle('dark',ui.theme==='dark'); });
+        this.refresh();
+      },
+
+      // Today's prompt
+      promptSourceLabel:(this.props.promptSource||'AI')==='Human'?'Human prompt':'AI prompt',
+      dailyNo:today.no, dailyTitle:today.title, dailyRule:today.rule,
+      dailyCount:'12,431', countdown:this.countdownStr(),
+      circleCount:this.pad2(today.subs.length),
+      canPostDaily:!guest && !this.hasPostedToday(today),
+      dailyPosted:!guest && this.hasPostedToday(today),
+      postDaily:()=>this.postToday(),
+      swipeWall:()=>this.swipeWall(),
+
+      // Feeds
+      dailyGrid, dailyArchive, lovedStrip,
+
+      // Lightbox
+      showLightbox:!!ui.lightbox,
+      lbBg:ui.lightbox?ui.lightbox.bg:'',
+      lbName:ui.lightbox?ui.lightbox.name:'',
+      lbPrompt:ui.lightbox?ui.lightbox.prompt:'',
+      lbWhen:ui.lightbox?ui.lightbox.when:'',
+      lbHearts:ui.lightbox?ui.lightbox.hearts:'',
+      closeLightbox:()=>{ ui.lightbox=null; this.refresh(); },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+/* ============================================================
+   LosqStudios · WEBFONTS
+   --------------------------------------------------------------
+   The production UI face is *Berkeley Mono* (LosqStudios licensed),
+   loaded locally below. No substitute is used. The display serif
+   uses Newsreader; titles use Akira Expanded.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+/* --- Berkeley Mono — the primary UI / body face --- */
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 400; font-style: normal; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 400; font-style: italic; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Oblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 500; font-style: normal; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 500; font-style: italic; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Medium-Oblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 700; font-style: normal; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Berkeley Mono';
+  font-weight: 700; font-style: italic; font-display: swap;
+  src: url('../assets/fonts/BerkeleyMono-Bold-Oblique.woff2') format('woff2');
+}
+
+/* --- Akira Expanded — the title display face (LosqStudios licensed) --- */
+@font-face {
+  font-family: 'Akira Expanded';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/AkiraExpanded.woff2') format('woff2'),
+       url('../assets/fonts/AkiraExpanded.woff') format('woff');
+}
+@font-face {
+  font-family: 'Akira Expanded';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/AkiraExpanded-Bold.woff2') format('woff2'),
+       url('../assets/fonts/AkiraExpanded-Bold.woff') format('woff');
+}

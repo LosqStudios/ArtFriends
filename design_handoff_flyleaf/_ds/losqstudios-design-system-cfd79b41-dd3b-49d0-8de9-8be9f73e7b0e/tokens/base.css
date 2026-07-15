@@ -1,0 +1,71 @@
+/* ============================================================
+   LosqStudios · BASE
+   Page reset + the recurring label/title/rule treatments that
+   appear across every surface. Components style themselves via
+   tokens; this is the shared connective tissue.
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-page);
+  color: var(--text-body);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* --- the uppercase micro-label that recurs everywhere --- */
+.ls-label {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* --- titles --- */
+.ls-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: var(--fs-title);
+  letter-spacing: var(--track-mid);
+  color: var(--text-heading);
+  text-transform: uppercase;
+  line-height: var(--lh-tight);
+}
+.ls-subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--track-tight);
+  margin-top: var(--space-1);
+}
+
+/* serif display moment — echoes the LOSQ mark */
+.ls-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  color: var(--text-heading);
+  line-height: var(--lh-tight);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* --- dividers --- */
+.ls-rule      { border: 0; border-top: var(--border-hair) var(--border-style) var(--border-default); }
+.ls-rule-soft { border: 0; border-top: var(--border-hair) var(--border-style) var(--border-muted); }
+
+/* --- corner-tick registration frame (Marathon mark) --- */
+.ls-ticks { position: relative; border: var(--border-hair) var(--border-style) var(--border-default); }
+.ls-ticks::before, .ls-ticks::after {
+  content: ''; position: absolute; width: var(--tick-size); height: var(--tick-size);
+  border: 1px solid var(--accent);
+}
+.ls-ticks::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.ls-ticks::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }

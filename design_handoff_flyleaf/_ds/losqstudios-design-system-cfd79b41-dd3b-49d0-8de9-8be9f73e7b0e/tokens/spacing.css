@@ -1,0 +1,51 @@
+/* ============================================================
+   LosqStudios · SPACING, BORDERS, MOTION
+   Hard edges. No radius. Hairline borders. Spacing is a tight
+   4px-based ramp suited to dense, instrument-panel layouts.
+   ============================================================ */
+
+:root {
+  /* --- spacing ramp (4px base) --- */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* layout constants from the kit */
+  --spine-width:   40px;   /* fixed left telemetry rail      */
+  --content-max:   1180px; /* page max-width                 */
+  --nav-width:     220px;  /* sidebar column                 */
+
+  /* --- radii --- */
+  /* The system is hard-edged. Radius is 0 almost everywhere. */
+  --radius-none: 0;
+  --radius-sm:   0;        /* alias kept = 0 for consistency  */
+
+  /* --- borders --- */
+  --border-hair: 1px;      /* every border is a hairline      */
+  --border-style: solid;   /* @kind other */
+
+  /* --- shadows --- */
+  /* No drop shadows. Depth comes from border + fill steps, not
+     blur. These are intentionally 'none' so consumers don't
+     reach for soft shadows that break the aesthetic. */
+  --shadow-none: none;
+  --shadow-flat: none;
+
+  /* --- registration ticks (Marathon corner marks) --- */
+  --tick-size: 6px;
+
+  /* --- motion --- */
+  /* motion: mechanical snap easing, fast durations, hover dim */
+  --ease-snap:  cubic-bezier(0.2, 0, 0, 1);  /* @kind other */
+  --dur-fast:   0.12s;     /* @kind other */
+  --dur-base:   0.2s;      /* @kind other */
+  --hover-opacity: 0.85;   /* @kind other */
+}

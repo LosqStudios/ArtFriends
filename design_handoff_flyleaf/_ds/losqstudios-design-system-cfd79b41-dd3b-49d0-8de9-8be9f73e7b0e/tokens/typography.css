@@ -1,0 +1,50 @@
+/* ============================================================
+   LosqStudios · TYPOGRAPHY TOKENS
+   The interface is monospace, uppercase, widely tracked —
+   telemetry/terminal dressing. The serif is reserved for the
+   logo and rare display moments (it mirrors the SerifBox mark).
+   ============================================================ */
+
+:root {
+  /* --- families --- */
+  /* Primary UI face. Berkeley Mono, loaded locally — no substitute. */
+  --font-mono: 'Berkeley Mono','SF Mono','Roboto Mono',ui-monospace,monospace;
+  /* Display serif — echoes the LOSQ mark. Rare, large, never body. */
+  --font-serif-display: 'Newsreader',Georgia,'Times New Roman',serif;
+  /* Title display — Akira Expanded. Headings / .ls-title only. */
+  --font-title: 'Akira Expanded','Arial Narrow',sans-serif;
+
+  /* semantic family aliases */
+  --font-ui:      var(--font-mono);
+  --font-body:    var(--font-mono);
+  --font-display: var(--font-serif-display);
+
+  /* --- type scale (px, matched to the kit) --- */
+  --fs-micro:  8px;    /* spine ticks, tiniest meta        */
+  --fs-label:  9px;    /* uppercase labels, buttons        */
+  --fs-meta:  11px;    /* subtitles, nav items             */
+  --fs-body:  12px;    /* default body / inputs            */
+  --fs-lead:  15px;    /* lead paragraph                   */
+  --fs-title: 30px;    /* panel / section titles (Akira display)  */
+  --fs-display: 40px;  /* hero numerals & serif moments    */
+
+  /* --- weights --- */
+  --fw-regular: 400;   /* @kind other */
+  --fw-medium:  500;   /* @kind other */
+  --fw-bold:    700;   /* @kind other */
+
+  /* --- line height --- */
+  --lh-tight: 1.2;     /* @kind other */
+  --lh-snug:  1.5;     /* @kind other */
+  --lh-body:  1.8;     /* @kind other */
+
+  /* --- letter-spacing (tracking) --- */
+  --track-tight: 0.5px;
+  --track-mid:   1.5px;
+  --track-wide:  3px;
+
+  /* semantic tracking aliases */
+  --track-label:  var(--track-wide);
+  --track-button: 2px;
+  --track-body:   var(--track-tight);
+}

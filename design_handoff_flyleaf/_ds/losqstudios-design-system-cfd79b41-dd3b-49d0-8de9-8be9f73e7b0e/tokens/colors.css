@@ -1,0 +1,73 @@
+/* ============================================================
+   LosqStudios · COLOR TOKENS — V03 "Wada" palette
+   Charcoal-black neutral ramp + a crimson primary accent,
+   with a lime highlight and a periwinkle tint as the supporting
+   pair. Dark is default; .light inverts the neutral ramp.
+   Retheming = editing these two blocks only.
+   ============================================================ */
+
+:root,
+.dark {
+  /* --- neutral ramp (dark default) --- */
+  --base:        #000000;   /* page background            */
+  --panel:       #0a0a0a;   /* card / panel fill           */
+  --panel-hi:    #111111;   /* raised panel / input fill   */
+  --border:      #2a2a2a;   /* hairline border             */
+  --border-soft: #1a1a1a;   /* low-contrast divider        */
+  --faint:       #4a4a4a;   /* disabled / ghost text       */
+  --label:       #6a6a6a;   /* uppercase micro-labels      */
+  --text:        #b8b8b8;   /* body text                   */
+  --text-bright: #ffffff;   /* headings / emphasis         */
+
+  /* --- accent (primary — Kurenai crimson) --- */
+  --accent:      #d7003a;   /* crimson                     */
+  --accent-ink:  #ffffff;   /* text/icon sitting on accent */
+  --accent-dim:  #c71a56;   /* pressed / muted accent      */
+
+  /* --- supporting accents (use one at a time, sparingly) --- */
+  --accent-lime:     #d4fe01;  /* Kihada — acid highlight  */
+  --accent-lime-dim: #c8d900;  /* muted lime               */
+  --accent-lime-ink: #1a1a1a;  /* ink on lime              */
+  --accent-sky:      #dce5f9;  /* Mizu-iro — cool tint     */
+  --accent-sky-dim:  #bdd7ee;  /* muted periwinkle         */
+  --accent-sky-ink:  #1a1a1a;  /* ink on sky               */
+
+  /* --- semantic aliases --- */
+  --bg-page:        var(--base);
+  --surface-card:   var(--panel);
+  --surface-raised: var(--panel-hi);
+  --border-default: var(--border);
+  --border-muted:   var(--border-soft);
+  --text-body:      var(--text);
+  --text-heading:   var(--text-bright);
+  --text-muted:     var(--label);
+  --text-disabled:  var(--faint);
+  --focus-ring:     var(--accent);
+
+  /* status leans on the single accent + neutrals — no extra hues */
+  --status-live:    var(--accent);
+  --status-idle:    var(--label);
+}
+
+.light {
+  --base:        #ffffff;
+  --panel:       #f5f5f5;
+  --panel-hi:    #ffffff;
+  --border:      #d4d4d4;
+  --border-soft: #e6e6e6;
+  --faint:       #b0b0b0;
+  --label:       #909090;
+  --text:        #3a3a3a;
+  --text-bright: #000000;
+
+  --accent:      #d7003a;
+  --accent-ink:  #ffffff;
+  --accent-dim:  #c71a56;
+
+  --accent-lime:     #c8d900;
+  --accent-lime-dim: #aebb00;
+  --accent-lime-ink: #1a1a1a;
+  --accent-sky:      #bdd7ee;
+  --accent-sky-dim:  #9cc0e0;
+  --accent-sky-ink:  #1a1a1a;
+}

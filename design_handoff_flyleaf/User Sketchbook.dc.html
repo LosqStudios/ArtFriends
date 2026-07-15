@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/base.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/components/components.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/styles.css">
+  <script src="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/_ds_bundle.js"></script>
+  <style>
+    html, body { margin:0; background:var(--bg-page, #000000); }
+    a { color:#d7003a; text-decoration:none; }
+    a:hover { color:#ffffff; }
+    /* Mobile polish */
+    @media (max-width:640px){
+      [data-m="content"]{ padding:20px 16px 40px !important; }
+      [data-m="profile-header"]{ gap:16px !important; }
+      [data-m="profile-photo"]{ width:84px !important; height:84px !important; }
+      [data-m="profile-right"]{ align-items:flex-start !important; text-align:left !important; width:100%; }
+      [data-m="pins-grid"]{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)) !important; }
+      [data-m="feed-grid"]{ grid-template-columns:repeat(auto-fill,minmax(104px,1fr)) !important; }
+    }
+  </style>
+</helmet>
+<div data-screen-label="User Sketchbook" style="min-height:100vh;background:var(--bg-page);color:var(--text-body);font-family:var(--font-mono);font-size:12px;line-height:1.7">
+
+  <!-- Telemetry spine -->
+  <div style="position:fixed;left:0;top:0;bottom:0;width:40px;z-index:50;border-right:1px solid var(--border);background:var(--base);display:flex;flex-direction:column;align-items:center;padding:28px 0 14px;gap:14px">
+    <a href="Flyleaf.dc.html" title="Back to Daily Sketch" style="display:block;flex-shrink:0">
+      <img src="assets/flywheel-white.svg" alt="Flyleaf" style="width:30px;height:auto;display:{{ logoWhiteDisplay }}">
+      <img src="assets/flywheel-black.svg" alt="Flyleaf" style="width:30px;height:auto;display:{{ logoBlackDisplay }}">
+    </a>
+    <div style="writing-mode:vertical-rl;display:flex;align-items:center;gap:14px;font-family:var(--font-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:8px 3px">
+      <span style="color:var(--text-bright);font-weight:700;letter-spacing:4px">Flyleaf</span>
+      <span style="color:var(--faint)">·</span>
+      <span style="color:var(--label)">Sketchbook</span>
+      <span style="color:var(--faint)">·</span>
+      <span style="color:var(--label)">{{ handle }}</span>
+    </div>
+    <div style="margin-top:auto"></div>
+    <button onClick="{{ toggleTheme }}" title="Toggle theme" style="width:18px;height:18px;border:1px solid var(--border);background:transparent;color:var(--label);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0;font-family:var(--font-mono);flex-shrink:0" style-hover="border-color:var(--accent);color:var(--accent)">◐</button>
+    <div style="writing-mode:vertical-rl;font-family:var(--font-mono);font-size:8px;letter-spacing:2px;color:var(--faint)">V0.3.0</div>
+  </div>
+
+  <div style="padding-left:40px">
+    <div data-m="content" style="max-width:1100px;margin:0 auto;padding:26px 36px 48px">
+
+      <!-- Back link -->
+      <div style="margin-bottom:18px">
+        <a href="Flyleaf.dc.html" style="font-size:9px;letter-spacing:2px;text-transform:uppercase">← Daily Sketch</a>
+      </div>
+
+      <!-- Profile header -->
+      <div data-m="profile-header" style="display:flex;gap:24px;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:24px;flex-wrap:wrap">
+        <div onClick="{{ photoClick }}" title="{{ photoTitle }}" data-m="profile-photo" style="width:110px;height:110px;flex-shrink:0;border:1px solid var(--border);background:{{ photoBg }};display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#000000;cursor:{{ photoCursor }};position:relative;overflow:hidden" style-hover="border-color:#d7003a">{{ photoInitials }}</div>
+        <div style="display:flex;flex-direction:column;min-width:0;flex:1">
+          <sc-if value="{{ showFull }}" hint-placeholder-val="{{ true }}">
+            <div style="font-family:var(--font-title);font-weight:700;font-size:26px;letter-spacing:2px;color:var(--text-bright);text-transform:uppercase;line-height:1.05">{{ name }}</div>
+          </sc-if>
+          <div style="font-size:10px;color:#d4fe01;letter-spacing:4px;text-transform:uppercase;margin-top:2px">{{ handle }}</div>
+          <sc-if value="{{ hasRole }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:9px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px">{{ role }}</div>
+          </sc-if>
+          <sc-if value="{{ hasSocials }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+              <sc-for list="{{ socials }}" as="so" hint-placeholder-count="2">
+                <span style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--label);border:1px solid var(--border);padding:4px 9px;white-space:nowrap" style-hover="color:var(--text-bright);border-color:var(--label)">{{ so.label }}</span>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ profileHidden }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:9px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;margin-top:14px">○ This profile is private</div>
+          </sc-if>
+        </div>
+        <div data-m="profile-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right;flex-shrink:0">
+          <sc-if value="{{ canFollow }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ toggleFollow }}" title="{{ followTitle }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:{{ followBg }};border:1px solid #d7003a;color:{{ followColor }};padding:7px 14px;cursor:pointer" style-hover="opacity:.85">{{ followLabel }}</button>
+          </sc-if>
+          <sc-if value="{{ isOwner }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ toggleProfileVisibility }}" title="Profile visibility" style="font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:5px 10px;cursor:pointer" style-hover="border-color:#d7003a;color:#d7003a">{{ profileVisibilityLabel }}</button>
+          </sc-if>
+          <sc-if value="{{ showFull }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#d7003a;border:1px solid #d7003a;padding:4px 9px;white-space:nowrap">◆ Streak · Cur {{ streakCount }} · Best {{ bestCount }}</span>
+            <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--label);white-space:nowrap">{{ totalCount }} sketches</span>
+            <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);white-space:nowrap">Member since {{ since }}</span>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- Private notice (replaces pins + feed) -->
+      <sc-if value="{{ profileHidden }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:24px;border:1px dashed var(--border);padding:28px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);text-align:center">○ This member's sketchbook is private</div>
+      </sc-if>
+
+      <!-- Tabs (owner only — Following is private) -->
+      <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-top:24px">
+          <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="2">
+            <button onClick="{{ tb.pick }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 18px;cursor:pointer;background:{{ tb.bg }};color:{{ tb.color }};border:1px solid {{ tb.border }};border-bottom:none;margin-right:-1px;margin-bottom:-1px;white-space:nowrap" style-hover="color:var(--text-bright)">{{ tb.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- Following tab (owner-only, private) -->
+      <sc-if value="{{ showFollowing }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 2px 14px;gap:12px;flex-wrap:wrap">
+          <span class="ls-label" style="color:var(--faint)">Following · {{ followCount }}</span>
+          <span style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);border:1px solid var(--border);padding:4px 9px;white-space:nowrap">○ Only visible to you</span>
+        </div>
+        <sc-if value="{{ hasFollows }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px">
+            <sc-for list="{{ followList }}" as="fo" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);background:var(--panel);padding:8px 10px">
+                <a href="{{ fo.link }}" title="View sketchbook" style="display:flex;align-items:center;gap:9px;color:inherit;min-width:0">
+                  <span style="width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#000000;border:1px solid var(--border);background:{{ fo.color }}">{{ fo.initials }}</span>
+                  <span style="font-size:9px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap" style-hover="color:#d7003a">{{ fo.handle }}</span>
+                </a>
+                <button onClick="{{ fo.unfollow }}" title="Unfollow {{ fo.handle }}" style="font-family:var(--font-mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:4px 8px;cursor:pointer;white-space:nowrap;flex-shrink:0" style-hover="border-color:#d7003a;color:#d7003a">✕ Unfollow</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noFollows }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed var(--border);padding:18px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)">Not following anyone yet · <a href="Browse.dc.html" style="letter-spacing:1.5px">Browse everyone →</a></div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ showWork }}" hint-placeholder-val="{{ true }}">
+      <!-- Pinned (crew members only — community profiles have no pins) -->
+      <sc-if value="{{ showPinsSection }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 2px 14px;gap:12px;flex-wrap:wrap">
+        <span class="ls-label" style="color:var(--faint)">Pinned <span style="color:var(--faint);letter-spacing:1px">· 3 slots</span></span>
+        <sc-if value="{{ isOwner }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ togglePinVisibility }}" title="Pinned sketches visibility" style="font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:5px 10px;cursor:pointer" style-hover="border-color:#d7003a;color:#d7003a">{{ pinVisibilityLabel }}</button>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showPins }}" hint-placeholder-val="{{ false }}">
+        <div data-m="pins-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+          <sc-for list="{{ pinned }}" as="p" hint-placeholder-count="2">
+            <div onClick="{{ p.open }}" title="View full size" style="position:relative;aspect-ratio:1/1;background:{{ p.bg }};border:1px solid #d7003a;cursor:pointer;overflow:hidden" style-hover="opacity:.9">
+              <sc-if value="{{ p.canUnpin }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ p.unpin }}" title="Unpin" style="position:absolute;top:6px;right:6px;z-index:2;font-family:var(--font-mono);font-size:9px;background:rgba(0,0,0,.75);border:1px solid #d7003a;color:#d7003a;padding:3px 7px;cursor:pointer" style-hover="background:#d7003a;color:#ffffff">◆ Unpin</button>
+              </sc-if>
+              <span style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);padding:5px 8px;display:flex;justify-content:space-between;align-items:center;gap:6px;z-index:1">
+                <span style="font-size:8px;color:#ffffff;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.no }} · {{ p.title }}</span>
+                <span style="font-size:8px;color:#d7003a;letter-spacing:.5px;white-space:nowrap;flex-shrink:0">{{ p.hearts }}</span>
+              </span>
+            </div>
+          </sc-for>
+          <sc-for list="{{ emptyPinSlots }}" as="es" hint-placeholder-count="0">
+            <div style="aspect-ratio:1/1;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)">◆ Pin from feed</div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ pinsPrivate }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px dashed var(--border);padding:18px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)">Pins are private</div>
+      </sc-if>
+      </sc-if>
+
+      <!-- Feed -->
+      <div class="ls-label" style="margin:36px 0 4px">Sketchbook feed</div>
+      <div style="font-size:9px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">Every Daily Sketch entry · Newest first</div>
+      <div data-m="feed-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
+        <sc-for list="{{ feed }}" as="f" hint-placeholder-count="6">
+          <div onClick="{{ f.open }}" title="View full size" style="position:relative;aspect-ratio:1/1;background:{{ f.bg }};border:1px solid {{ f.border }};cursor:pointer;transition:border-color .12s;overflow:hidden" style-hover="border-color:#d7003a">
+            <sc-if value="{{ f.canPin }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ f.togglePin }}" title="{{ f.pinTitle }}" style="position:absolute;top:6px;right:6px;z-index:2;font-family:var(--font-mono);font-size:10px;line-height:1;background:rgba(0,0,0,.75);border:1px solid {{ f.pinBorder }};color:{{ f.pinColor }};padding:4px 6px;cursor:pointer" style-hover="border-color:#d7003a;color:#d7003a">◆</button>
+            </sc-if>
+            <span style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);padding:4px 7px;display:flex;justify-content:space-between;align-items:center;gap:6px;z-index:1">
+              <span style="font-size:8px;color:#ffffff;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.no }} · {{ f.title }}</span>
+              <span style="font-size:8px;color:#d7003a;letter-spacing:.5px;white-space:nowrap;flex-shrink:0">{{ f.hearts }}</span>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <!-- Lightbox -->
+      <sc-if value="{{ showLightbox }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeLightbox }}" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px">
+          <div style="width:min(78vh,82vw);height:min(78vh,82vw);border:1px solid #d7003a;background:{{ lbBg }};position:relative;overflow:hidden"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;width:min(78vh,82vw);max-width:100%">
+            <span style="font-size:11px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase">{{ lbName }} <span style="color:#d7003a">{{ lbHearts }}</span></span>
+            <span style="font-size:9px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase">{{ lbPrompt }} · {{ lbWhen }}</span>
+          </div>
+          <button onClick="{{ closeLightbox }}" style="position:fixed;top:24px;right:28px;font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:8px 12px;cursor:pointer" style-hover="border-color:#d7003a;color:#d7003a">✕ Close</button>
+        </div>
+      </sc-if>
+
+      <!-- Footer -->
+      <div style="margin-top:40px;border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:8px;color:var(--faint);letter-spacing:2px;text-transform:uppercase">© Losq Studios</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;member&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;You&quot;,&quot;options&quot;:[&quot;You&quot;,&quot;Mara K.&quot;,&quot;Devon R.&quot;,&quot;Sol&quot;,&quot;Ines T.&quot;,&quot;Kit V.&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+class Component extends DCLogic {
+  // ── Static data (mirrors Flyleaf's seed, plus profile fields) ──
+  MEMBERS = [
+    { name:'You',      handle:'@mouse',      color:'#a8823f', initials:'YO', since:'JAN 2026', role:'Space Ninja 👽', socials:['IG · @mouse','WEB · losq.art'],        pins:['0184','0182'],        pinsPublic:true, profilePublic:true, photo:'uploads/MouseIcon_184.jpg' },
+    { name:'Mara K.',  handle:'@mara_k',     color:'#5a7a9c', initials:'MK', since:'JAN 2026', socials:['IG · @mara.paints'],                   pins:['0187','0185','0181'], pinsPublic:true },
+    { name:'Devon R.', handle:'@devonrr',    color:'#a85a5a', initials:'DR', since:'FEB 2026', socials:['TT · @devonrr','WEB · devonr.info'],   pins:['0186'],               pinsPublic:true },
+    { name:'Sol',      handle:'@sol.png',    color:'#5c8a5c', initials:'SO', since:'MAR 2026', socials:[],                                      pins:['0187','0182'],        pinsPublic:false, profilePublic:false },
+    { name:'Ines T.',  handle:'@inest',      color:'#8a6a9c', initials:'IT', since:'MAR 2026', socials:['IG · @ines.t'],                        pins:[],                     pinsPublic:true, profilePublic:false },
+    { name:'Kit V.',   handle:'@kitvee',     color:'#9c8a5a', initials:'KV', since:'MAY 2026', socials:['WEB · kitv.studio'],                   pins:['0185'],               pinsPublic:true },
+  ];
+
+  GRADIENTS = {
+    light:'linear-gradient(160deg,#0d1622,#24354a 55%,#b8a878 70%,#0a0f16)',
+    light2:'linear-gradient(135deg,#050a12,#16283c 60%,#dce5f9 78%,#050a12)',
+    forest:'linear-gradient(135deg,#1a2418,#2e3a22 60%,#0d130a)',
+    deep:'linear-gradient(135deg,#0a1f2e,#13405a 60%,#06141d)',
+    deep2:'linear-gradient(160deg,#06141d,#1d5570 65%,#0a1f2e)',
+    feline:'linear-gradient(135deg,#2a1a2e,#5a3a6a 60%,#14091a)',
+    harbor:'linear-gradient(135deg,#141a1e,#3c4a52 60%,#dce5f9 85%,#0d1114)',
+    walk:'linear-gradient(135deg,#171717,#333333 60%,#0f0f0f)',
+    shape:'linear-gradient(135deg,#1a1408,#4a3a12 60%,#100c05)',
+    riso:'linear-gradient(135deg,#e8407a,#f0a020 62%,#f5efe0)',
+    rain:'linear-gradient(160deg,#0d1014,#2a3440 55%,#8a97a8 75%,#0b0e12)',
+  };
+  SAMPLE_IMAGES = {
+    REAL:  { src:'uploads/10_hipHopShark_C-1beb6015.jpg', frame:'#0a0a0a' },
+    REAL2: { src:'uploads/IMG_1936.jpeg',                 frame:'#f4f2ec' },
+  };
+
+  // Prompt history, newest first (deeper than the Flyleaf wall so feeds have depth).
+  PROMPTS = [
+    { no:'0187', title:'Lighthouse interior',        when:'Today',      subs:[ {a:1,bg:'light'}, {a:2,bg:'light2'}, {a:3,bg:'harbor'}, {a:4,bg:'deep'}, {a:5,bg:'feline'} ] },
+    { no:'0186', title:'Crowd in rain',              when:'Yesterday',  subs:[ {a:1,bg:'rain'}, {a:4,bg:'walk'}, {a:0,bg:'REAL'}, {a:3,bg:'deep'} ] },
+    { no:'0185', title:'Something in a jar',         when:'2 days ago', subs:[ {a:2,bg:'feline'}, {a:5,bg:'shape'}, {a:1,bg:'riso'} ] },
+    { no:'0184', title:'Empty stage',                when:'3 days ago', subs:[ {a:3,bg:'deep2'}, {a:0,bg:'REAL2'}, {a:2,bg:'forest'} ] },
+    { no:'0183', title:'Hands only',                 when:'4 days ago', subs:[ {a:0,bg:'walk'}, {a:1,bg:'deep'}, {a:4,bg:'riso'} ] },
+    { no:'0182', title:'Night kitchen',              when:'5 days ago', subs:[ {a:0,bg:'shape'}, {a:2,bg:'harbor'}, {a:5,bg:'rain'} ] },
+    { no:'0181', title:'Botanical study',            when:'6 days ago', subs:[ {a:1,bg:'forest'}, {a:3,bg:'light2'} ] },
+    { no:'0180', title:'Self portrait as an object', when:'1 week ago', subs:[ {a:0,bg:'feline'}, {a:5,bg:'deep2'}, {a:2,bg:'light'} ] },
+  ];
+
+  ui = { theme:'dark', lightbox:null, photo:null, tab:'sketchbook' };
+
+  // ── Helpers ────────────────────────────────────────────────────
+  refresh(){ this.forceUpdate(); }
+  pad2(n){ return String(n).padStart(2,'0'); }
+
+  // Which member's sketchbook: ?u=<index> in the URL wins, else the member prop.
+  memberIndex(){
+    const u=new URLSearchParams(window.location.search).get('u');
+    if(u!==null && this.MEMBERS[+u]) return +u;
+    const byName=this.MEMBERS.findIndex(m=>m.name===(this.props.member||'You'));
+    return byName>=0?byName:0;
+  }
+
+  // ?h=@handle → a community artist outside the crew (synthesized profile;
+  // in production this is a user record fetched by handle).
+  communityMember(){
+    const h=new URLSearchParams(window.location.search).get('h');
+    if(!h) return null;
+    const crew=this.MEMBERS.find(m=>m.handle===h);
+    if(crew) return null; // crew handles fall through to memberIndex
+    const seed=[...h].reduce((a,c)=>a+c.charCodeAt(0),0);
+    const colors=['#5a7a9c','#a85a5a','#5c8a5c','#8a6a9c','#9c8a5a','#7a8a9c'];
+    return {
+      name:h.replace('@',''), handle:h.startsWith('@')?h:'@'+h,
+      color:colors[seed%colors.length],
+      initials:h.replace('@','').slice(0,2).toUpperCase(),
+      since:['FEB','MAR','APR','MAY'][seed%4]+' 2026',
+      role:'Community artist', socials:[], pins:[], pinsPublic:true, profilePublic:true,
+      community:true, seed,
+    };
+  }
+
+  // ── Follows (persisted; in production a server-side edge) ──────
+  followKey='flyleaf-follows';
+  getFollows(){ try{ return JSON.parse(localStorage.getItem(this.followKey))||[]; }catch(e){ return []; } }
+  isFollowing(handle){ return this.getFollows().includes(handle); }
+  toggleFollow(handle){
+    const f=this.getFollows();
+    const i=f.indexOf(handle);
+    if(i>=0) f.splice(i,1); else f.push(handle);
+    localStorage.setItem(this.followKey, JSON.stringify(f));
+    this.refresh();
+  }
+
+  artBg(sub){
+    if(sub.img) return '#0a0a0a url("'+sub.img+'") center / contain no-repeat';
+    const sample=this.SAMPLE_IMAGES[sub.bg];
+    if(sample) return sample.frame+' url("'+sample.src+'") center / contain no-repeat';
+    return this.GRADIENTS[sub.bg]||sub.bg||'var(--panel-hi)';
+  }
+
+  // Deterministic fake hearts (same seeding scheme as Flyleaf).
+  seedHearts(n){ return ((n%3)+1) + (n%2===0?((n%2)+1):0); }
+
+  componentDidMount(){
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+    this.seedFollows();
+  }
+
+  // Demo: seed 40 followed artists once (crew + community handles).
+  seedFollows(){
+    if(localStorage.getItem('flyleaf-follows-seeded')) return;
+    const a=['ink','plum','night','soft','tall','bird','ochre','riso','fog','tin','moss','salt','wax','static','paper','cinder','gum','pale','iron','dune'];
+    const b=['well','line','bus','serve','grass','eye','ghost','bank','loop','box','field','wire','room','press','drift','signal','arch','creek','lamp','vane'];
+    const seeded=['@mara_k','@devonrr','@sol.png','@kitvee'];
+    for(let i=0;i<400&&seeded.length<40;i++){ const h='@'+a[i%20]+b[(Math.floor(i/3)+i)%20]; if(!seeded.includes(h)) seeded.push(h); }
+    const cur=this.getFollows();
+    seeded.forEach(h=>{ if(!cur.includes(h)) cur.push(h); });
+    localStorage.setItem(this.followKey, JSON.stringify(cur));
+    localStorage.setItem('flyleaf-follows-seeded','1');
+    this.refresh();
+  }
+
+  // ── Actions ────────────────────────────────────────────────────
+  pickImage(cb){
+    const inp=document.createElement('input');
+    inp.type='file'; inp.accept='image/*'; inp.style.cssText='position:fixed;left:-9999px;top:0;';
+    document.body.appendChild(inp);
+    inp.onchange=()=>{
+      const f=inp.files&&inp.files[0];
+      if(f&&f.type.startsWith('image/')){ const r=new FileReader(); r.onload=(ev)=>cb(ev.target.result); r.readAsDataURL(f); }
+      inp.remove();
+    };
+    inp.click();
+  }
+
+  togglePin(member, promptNo){
+    const i=member.pins.indexOf(promptNo);
+    if(i>=0) member.pins.splice(i,1);
+    else { if(member.pins.length>=3) return; member.pins.push(promptNo); }
+    this.refresh();
+  }
+
+  openLightbox(entry, name){
+    this.ui.lightbox={ bg:entry.bg, name, prompt:'Prompt '+entry.no+' · '+entry.title, when:entry.when, hearts:'♥ '+entry.heartsN };
+    this.refresh();
+  }
+
+  // ── Render values ──────────────────────────────────────────────
+  renderVals(){
+    const ui=this.ui;
+    const community=this.communityMember();
+    const mi=community?-1:this.memberIndex();
+    const member=community||this.MEMBERS[mi];
+    const isOwner=mi===0;
+
+    // Feed: this member's entry per prompt, newest first.
+    const entries=[];
+    if(community){
+      // Synthesized history for a community artist.
+      const keys=Object.keys(this.GRADIENTS);
+      this.PROMPTS.forEach((p,pi)=>{
+        const r=Math.abs(Math.sin(member.seed*1.7+pi*7.3))%1;
+        if(r>0.3) entries.push({ no:p.no, title:p.title, when:p.when, bg:this.GRADIENTS[keys[Math.floor(r*97)%keys.length]], heartsN:Math.floor(r*48) });
+      });
+    } else {
+      this.PROMPTS.forEach((p,pi)=>{
+        p.subs.forEach((s,si)=>{
+          if(s.a!==mi) return;
+          entries.push({ no:p.no, title:p.title, when:p.when, bg:this.artBg(s), heartsN:this.seedHearts(pi*3+si+2) });
+        });
+      });
+    }
+
+    // Streak: consecutive prompts from newest with an entry.
+    const posted=(p)=>community?entries.some(e=>e.no===p.no):p.subs.some(s=>s.a===mi);
+    let streak=0; for(const p of this.PROMPTS){ if(posted(p)) streak++; else break; }
+    let best=0, run=0; for(const p of this.PROMPTS){ if(posted(p)){ run++; if(run>best) best=run; } else run=0; }
+
+    // Full-profile privacy: hides everything except @handle + subline from non-owners.
+    const hidden = member.profilePublic===false && !isOwner;
+
+    const pinsVisible = member.pinsPublic || isOwner;
+    const pinnedEntries=member.pins.map(no=>entries.find(e=>e.no===no)).filter(Boolean);
+
+    const pinned=pinnedEntries.map(e=>({
+      no:e.no, title:e.title, bg:e.bg, hearts:'♥ '+e.heartsN,
+      canUnpin:isOwner,
+      unpin:(ev)=>{ ev.stopPropagation(); this.togglePin(member, e.no); },
+      open:()=>this.openLightbox(e, member.name),
+    }));
+
+    const feed=entries.map(e=>{
+      const isPinned=member.pins.includes(e.no);
+      return {
+        no:e.no, title:e.title, bg:e.bg, hearts:'♥ '+e.heartsN,
+        border:isPinned?'#d7003a':'var(--border)',
+        canPin:isOwner,
+        pinBorder:isPinned?'#d7003a':'var(--border)',
+        pinColor:isPinned?'#d7003a':'var(--label)',
+        pinTitle:isPinned?'Unpin':'Pin (3 max)',
+        togglePin:(ev)=>{ ev.stopPropagation(); this.togglePin(member, e.no); },
+        open:()=>this.openLightbox(e, member.name),
+      };
+    });
+
+    return {
+      // Header
+      name:member.name,
+      handle:member.handle,
+      since:member.since,
+      totalCount:this.pad2(entries.length),
+      streakCount:this.pad2(streak),
+      bestCount:this.pad2(Math.max(best,streak)),
+      hasSocials:!hidden && member.socials.length>0,
+      socials:member.socials.map(s=>({ label:s })),
+      hasRole:!!member.role,
+      role:member.role||'',
+      isOwner,
+
+      // Follow (any profile that isn't yours)
+      canFollow:!isOwner,
+      followLabel:this.isFollowing(member.handle)?'● Following':'+ Follow',
+      followTitle:this.isFollowing(member.handle)?'Unfollow '+member.handle:'Follow '+member.handle,
+      followBg:this.isFollowing(member.handle)?'#d7003a':'transparent',
+      followColor:this.isFollowing(member.handle)?'#ffffff':'#d7003a',
+      toggleFollow:()=>this.toggleFollow(member.handle),
+      showPinsSection:!community,
+
+      // Following list (owner-only, private)
+      ...(()=>{
+        const follows=this.getFollows();
+        const colors=['#5a7a9c','#a85a5a','#5c8a5c','#8a6a9c','#9c8a5a','#7a8a9c'];
+        const onFollowingTab=isOwner&&ui.tab==='following';
+        return {
+          showTabs:isOwner,
+          tabs:[['sketchbook','Sketchbook'],['following','Following · '+this.pad2(follows.length)]].map(([k,label])=>({
+            label, pick:()=>{ ui.tab=k; this.refresh(); },
+            bg:ui.tab===k?'var(--panel-hi)':'transparent',
+            color:ui.tab===k?'var(--text-bright)':'var(--label)',
+            border:ui.tab===k?'var(--accent, #d7003a)':'var(--border)',
+          })),
+          showWork:!hidden&&(!isOwner||ui.tab==='sketchbook'),
+          showFollowing:onFollowingTab,
+          followCount:this.pad2(follows.length),
+          hasFollows:onFollowingTab&&follows.length>0,
+          noFollows:onFollowingTab&&follows.length===0,
+          followList:follows.map(h=>{
+            const ci=this.MEMBERS.findIndex(m=>m.handle===h);
+            const crew=ci>=0?this.MEMBERS[ci]:null;
+            const seed=[...h].reduce((a,c)=>a+c.charCodeAt(0),0);
+            return {
+              handle:h,
+              color:crew?crew.color:colors[seed%colors.length],
+              initials:crew?crew.initials:h.replace('@','').slice(0,2).toUpperCase(),
+              link:'User Sketchbook.dc.html'+(crew?('?u='+ci):('?h='+encodeURIComponent(h))),
+              unfollow:()=>this.toggleFollow(h),
+            };
+          }),
+        };
+      })(),
+
+      // Privacy
+      showFull:!hidden,
+      profileHidden:hidden,
+      toggleProfileVisibility:()=>{ member.profilePublic=member.profilePublic===false; this.refresh(); },
+      profileVisibilityLabel:member.profilePublic!==false?'● Profile · Public':'○ Profile · Private',
+
+      // Photo: uploaded image, else the member's stored photo, else initials. Hidden profiles show a blank slot.
+      photoBg:hidden?'var(--panel-hi)':((ui.photo||member.photo)?('#0a0a0a url("'+(ui.photo||member.photo)+'") center / cover no-repeat'):member.color),
+      photoInitials:hidden?'':((ui.photo||member.photo)?'':member.initials),
+      photoCursor:isOwner?'pointer':'default',
+      photoTitle:isOwner?'Upload profile image':member.name,
+      photoClick:()=>{ if(!isOwner) return; this.pickImage((src)=>{ ui.photo=src; this.refresh(); }); },
+
+      // Pins
+      showPins:pinsVisible,
+      pinsPrivate:!pinsVisible,
+      pinned,
+      emptyPinSlots:isOwner?Array.from({length:Math.max(0,3-pinnedEntries.length)},(_,i)=>({i})):[],
+      togglePinVisibility:()=>{ member.pinsPublic=!member.pinsPublic; this.refresh(); },
+      pinVisibilityLabel:member.pinsPublic?'● Pins · Public':'○ Pins · Private',
+
+      // Feed
+      feed,
+
+      // Misc
+      logoWhiteDisplay:ui.theme==='dark'?'block':'none',
+      logoBlackDisplay:ui.theme==='dark'?'none':'block',
+      toggleTheme:()=>{
+        ui.theme=ui.theme==='dark'?'light':'dark';
+        [document.documentElement,document.body].forEach(el=>{ el.classList.toggle('light',ui.theme==='light'); el.classList.toggle('dark',ui.theme==='dark'); });
+        this.refresh();
+      },
+
+      // Lightbox
+      showLightbox:!!ui.lightbox,
+      lbBg:ui.lightbox?ui.lightbox.bg:'',
+      lbName:ui.lightbox?ui.lightbox.name:'',
+      lbPrompt:ui.lightbox?ui.lightbox.prompt:'',
+      lbWhen:ui.lightbox?ui.lightbox.when:'',
+      lbHearts:ui.lightbox?ui.lightbox.hearts:'',
+      closeLightbox:()=>{ ui.lightbox=null; this.refresh(); },
+    };
+  }
+}
+</script>
+</body>
+</html>

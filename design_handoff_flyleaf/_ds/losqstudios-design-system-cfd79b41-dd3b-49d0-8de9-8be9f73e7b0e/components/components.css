@@ -1,0 +1,186 @@
+/* ============================================================
+   LosqStudios · COMPONENT CSS
+   Class-based styling for the React primitives. Lives in the
+   global closure (imported from styles.css) so hover/focus/active
+   states work and consumers using plain HTML get them too.
+   Every rule references tokens — no literal colors here.
+   ============================================================ */
+
+/* ---------------- BUTTON ---------------- */
+.ls-btn {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-button);
+  text-transform: uppercase;
+  border: var(--border-hair) var(--border-style) transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  transition: opacity var(--dur-fast) var(--ease-snap),
+              border-color var(--dur-fast) var(--ease-snap),
+              color var(--dur-fast) var(--ease-snap),
+              background var(--dur-fast) var(--ease-snap);
+}
+.ls-btn:disabled { opacity: 0.25; cursor: default; }
+
+/* sizes */
+.ls-btn--sm { padding: 6px 12px; font-size: var(--fs-micro); }
+.ls-btn--md { padding: 10px 20px; }
+.ls-btn--lg { padding: 14px 28px; font-size: var(--fs-label); letter-spacing: var(--track-wide); }
+
+/* primary — solid pink, ink text */
+.ls-btn--primary { background: var(--accent); color: var(--accent-ink); }
+.ls-btn--primary:not(:disabled):hover  { opacity: var(--hover-opacity); }
+.ls-btn--primary:not(:disabled):active { background: var(--accent-dim); opacity: 1; }
+
+/* outline — hairline, fills pink when .is-on */
+.ls-btn--outline { background: transparent; border-color: var(--border-default); color: var(--text-body); letter-spacing: var(--track-mid); }
+.ls-btn--outline:not(:disabled):hover  { border-color: var(--text-muted); color: var(--text-heading); }
+.ls-btn--outline.is-on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* ghost — text only */
+.ls-btn--ghost { background: transparent; color: var(--text-muted); letter-spacing: var(--track-mid); }
+.ls-btn--ghost:not(:disabled):hover { color: var(--text-heading); }
+
+/* ---------------- TAG / PILL ---------------- */
+.ls-tag {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: var(--border-hair) var(--border-style) var(--border-default);
+  background: transparent;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+}
+.ls-tag:hover { color: var(--text-heading); }
+.ls-tag.is-on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.ls-tag--static { cursor: default; }
+
+/* ---------------- STATUS BADGE ---------------- */
+.ls-status {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border: var(--border-hair) var(--border-style) currentColor;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ls-status--live { color: var(--accent); }
+.ls-status--idle { color: var(--text-muted); }
+.ls-status .ls-status__dot { width: 5px; height: 5px; background: currentColor; display: inline-block; }
+
+/* ---------------- AVATAR ---------------- */
+.ls-avatar {
+  width: 46px; height: 46px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  letter-spacing: var(--track-tight);
+  color: var(--text-bright);
+  border: var(--border-hair) var(--border-style) var(--border-default);
+  text-transform: uppercase;
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+.ls-avatar--accent { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.ls-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------------- INPUT / TEXTAREA ---------------- */
+.ls-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.ls-field__label { font-family: var(--font-ui); font-size: var(--fs-label); letter-spacing: var(--track-wide); color: var(--text-muted); text-transform: uppercase; }
+.ls-input, .ls-textarea {
+  width: 100%;
+  background: var(--surface-raised);
+  border: var(--border-hair) var(--border-style) var(--border-default);
+  color: var(--text-heading);
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  padding: 12px 14px;
+  outline: none;
+  letter-spacing: 1px;
+  transition: border-color var(--dur-fast);
+}
+.ls-input { text-transform: uppercase; }
+.ls-input::placeholder, .ls-textarea::placeholder { color: var(--text-disabled); }
+.ls-textarea { line-height: var(--lh-body); resize: vertical; min-height: 80px; text-transform: none; }
+.ls-input:focus, .ls-textarea:focus { border-color: var(--focus-ring); }
+.ls-input:disabled, .ls-textarea:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---------------- CHECKBOX / SWITCH ---------------- */
+.ls-check { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-family: var(--font-ui); font-size: var(--fs-meta); letter-spacing: 1px; color: var(--text-body); text-transform: uppercase; user-select: none; }
+.ls-check__box { width: 16px; height: 16px; border: var(--border-hair) var(--border-style) var(--border-default); display: inline-flex; align-items: center; justify-content: center; flex: none; transition: border-color var(--dur-fast), background var(--dur-fast); }
+.ls-check:hover .ls-check__box { border-color: var(--text-muted); }
+.ls-check.is-checked .ls-check__box { background: var(--accent); border-color: var(--accent); }
+.ls-check__tick { width: 8px; height: 8px; background: var(--accent-ink); }
+.ls-check.is-disabled { opacity: 0.3; cursor: not-allowed; }
+
+.ls-switch { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-family: var(--font-ui); font-size: var(--fs-meta); letter-spacing: 1px; color: var(--text-body); text-transform: uppercase; user-select: none; }
+.ls-switch__track { width: 38px; height: 18px; border: var(--border-hair) var(--border-style) var(--border-default); background: var(--surface-raised); position: relative; flex: none; transition: border-color var(--dur-fast), background var(--dur-fast); }
+.ls-switch__thumb { position: absolute; top: 1px; left: 1px; width: 14px; height: 14px; background: var(--text-muted); transition: left var(--dur-fast) var(--ease-snap), background var(--dur-fast); }
+.ls-switch.is-on .ls-switch__track { border-color: var(--accent); }
+.ls-switch.is-on .ls-switch__thumb { left: 21px; background: var(--accent); }
+.ls-switch.is-disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ---------------- PANEL ---------------- */
+.ls-panel { background: var(--surface-card); border: var(--border-hair) var(--border-style) var(--border-default); padding: var(--space-5) var(--space-6); }
+.ls-panel--raised { background: var(--surface-raised); }
+.ls-panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-4); }
+
+/* ---------------- NAV ITEM ---------------- */
+.ls-nav-item {
+  text-align: left; background: transparent;
+  border: var(--border-hair) var(--border-style) var(--border-muted);
+  color: var(--text-body); font-family: var(--font-ui);
+  font-size: var(--fs-meta); letter-spacing: 1px;
+  padding: 11px 12px; cursor: pointer; transition: all var(--dur-fast);
+  display: block; width: 100%; text-transform: uppercase; position: relative;
+}
+.ls-nav-item:hover { border-color: var(--border-default); color: var(--text-heading); }
+.ls-nav-item.is-active { background: var(--surface-raised); border-color: var(--accent); color: var(--text-heading); }
+.ls-nav-item.is-active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); }
+
+/* ---------------- SPINE ---------------- */
+.ls-spine { position: absolute; left: 0; top: 0; bottom: 0; width: var(--spine-width); border-right: var(--border-hair) var(--border-style) var(--border-default); display: flex; flex-direction: column; align-items: center; padding: var(--space-4) 0; gap: var(--space-4); background: var(--bg-page); z-index: 50; }
+.ls-spine__mark { width: 18px; height: 18px; border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 10px; flex: none; }
+.ls-spine__text { writing-mode: vertical-rl; font-size: var(--fs-micro); letter-spacing: var(--track-wide); color: var(--text-muted); text-transform: uppercase; }
+.ls-spine__ver { writing-mode: vertical-rl; font-size: var(--fs-micro); letter-spacing: 2px; color: var(--text-disabled); margin-top: auto; }
+
+/* ---------------- GALLERY ---------------- */
+.ls-gallery { display: grid; width: 100%; }
+.ls-gallery__cell {
+  margin: 0;
+  background: var(--surface-card);
+  border: var(--border-hair) var(--border-style) var(--border-default);
+  display: flex; flex-direction: column;
+  transition: border-color var(--dur-fast) var(--ease-snap);
+}
+.ls-gallery__cell:hover { border-color: var(--text-muted); }
+.ls-gallery__media { width: 100%; overflow: hidden; background: var(--surface-raised); position: relative; }
+.ls-gallery__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity var(--dur-fast) var(--ease-snap); }
+.ls-gallery__cell:hover .ls-gallery__media img { opacity: var(--hover-opacity); }
+.ls-gallery__ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-ui); font-size: var(--fs-micro);
+  letter-spacing: var(--track-mid); text-transform: uppercase;
+  color: var(--text-disabled);
+  background-image: repeating-linear-gradient(45deg, transparent 0 7px, var(--border-muted) 7px 8px);
+}
+.ls-gallery__cap {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--space-3); padding: var(--space-2) var(--space-3);
+  border-top: var(--border-hair) var(--border-style) var(--border-default);
+  font-family: var(--font-ui); text-transform: uppercase;
+}
+.ls-gallery__cap-t { font-size: var(--fs-label); letter-spacing: var(--track-mid); color: var(--text-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ls-gallery__cell:hover .ls-gallery__cap-t { color: var(--text-heading); }
+.ls-gallery__cap-i { font-size: var(--fs-micro); letter-spacing: 1px; color: var(--accent); flex: none; }
