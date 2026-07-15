@@ -69,6 +69,7 @@ See `_ds/.../tokens/*.css` for the authoritative set. Highlights: `--accent #d70
 - `_ds/.../assets/` — Losq logo lockups + Berkeley Mono / Akira Expanded fonts (licensed — confirm distribution before committing fonts to a public repo).
 
 ## Files
+- `Join.dc.html` — registration/onboarding: claim handle (availability check), identity (name, initials, badge color), role + channels, privacy defaults → registers member 001. Writes `flyleaf-user` to localStorage; Flyleaf + Sketchbook read it and render the fresh-account state (empty sketchbook, streak 00, no follows, live post CTA) until the first post clears the `fresh` flag. "Reset test account" link restarts the flow.
 - `Flyleaf.dc.html` — home: prompt, wall, crew, archive
 - `Browse.dc.html` — global feed + lightbox → sketchbook
 - `User Sketchbook.dc.html` — profile, follow, privacy, tabs

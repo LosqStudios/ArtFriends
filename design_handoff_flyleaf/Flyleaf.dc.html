@@ -211,7 +211,7 @@ class Component extends DCLogic {
   // ── Static data ────────────────────────────────────────────────
   // Members: index 0 is always the current user ("You").
   MEMBERS = [
-    { name:'You',      color:'#a8823f', initials:'YO' },
+    { name:'Nick Losq', color:'#a8823f', initials:'NL' },
     { name:'Mara K.',  color:'#5a7a9c', initials:'MK' },
     { name:'Devon R.', color:'#a85a5a', initials:'DR' },
     { name:'Sol',      color:'#5c8a5c', initials:'SO' },
@@ -299,6 +299,12 @@ class Component extends DCLogic {
     document.documentElement.classList.add('dark');
     document.body.classList.add('dark');
     this.applyAccent();
+    // Registered test account (via Join.dc.html): adopt identity, drop seeded member-0 posts.
+    let regUser=null; try{ regUser=JSON.parse(localStorage.getItem('flyleaf-user')); }catch(e){}
+    if(regUser){
+      this.MEMBERS[0]={ ...this.MEMBERS[0], name:regUser.name, initials:regUser.initials, color:regUser.color };
+      if(regUser.fresh) this.PROMPTS.forEach(p=>{ p.subs=p.subs.filter(s=>s.a!==0); });
+    }
     // Seed demo reactions on any submission that has none.
     this.PROMPTS.forEach((p,pi)=>p.subs.forEach((s,si)=>{ if(!s.r||!Object.keys(s.r).length) s.r=this.seedReactions(pi*3+si+2); }));
     // 1s tick drives the countdown.
@@ -377,6 +383,8 @@ class Component extends DCLogic {
 
   postToday(){
     if(this.isGuest()) return;
+    // First post ends the fresh state — history begins.
+    try{ const u=JSON.parse(localStorage.getItem('flyleaf-user')); if(u&&u.fresh){ u.fresh=false; localStorage.setItem('flyleaf-user', JSON.stringify(u)); } }catch(e){}
     const today=this.PROMPTS[0];
     if(this.hasPostedToday(today)) return;
     this.pickImage((src)=>{ today.subs.unshift({ a:0, img:src, r:{}, mine:true }); this.refresh(); });

@@ -169,6 +169,13 @@
       <!-- Feed -->
       <div class="ls-label" style="margin:36px 0 4px">Sketchbook feed</div>
       <div style="font-size:9px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">Every Daily Sketch entry · Newest first</div>
+      <sc-if value="{{ feedEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px dashed var(--border);padding:26px 20px;text-align:center">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--label)">No transmission yet</div>
+          <div style="font-size:10px;color:var(--faint);margin-top:8px;letter-spacing:1px">Today's prompt is live · post your first sketch to start your streak</div>
+          <a href="Flyleaf.dc.html" style="display:inline-block;margin-top:16px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:#d7003a;border:1px solid #d7003a;color:#ffffff;padding:9px 16px" style-hover="opacity:.85">Go to today's prompt →</a>
+        </div>
+      </sc-if>
       <div data-m="feed-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
         <sc-for list="{{ feed }}" as="f" hint-placeholder-count="6">
           <div onClick="{{ f.open }}" title="View full size" style="position:relative;aspect-ratio:1/1;background:{{ f.bg }};border:1px solid {{ f.border }};cursor:pointer;transition:border-color .12s;overflow:hidden" style-hover="border-color:#d7003a">
@@ -209,7 +216,7 @@
 class Component extends DCLogic {
   // ── Static data (mirrors Flyleaf's seed, plus profile fields) ──
   MEMBERS = [
-    { name:'You',      handle:'@mouse',      color:'#a8823f', initials:'YO', since:'JAN 2026', role:'Space Ninja 👽', socials:['IG · @mouse','WEB · losq.art'],        pins:['0184','0182'],        pinsPublic:true, profilePublic:true, photo:'uploads/MouseIcon_184.jpg' },
+    { name:'Nick Losq', handle:'@mouse',     color:'#a8823f', initials:'NL', since:'JAN 2026', role:'Space Ninja 👽', socials:['IG · @mouse','WEB · losq.art'],        pins:['0184','0182'],        pinsPublic:true, profilePublic:true, photo:'uploads/MouseIcon_184.jpg' },
     { name:'Mara K.',  handle:'@mara_k',     color:'#5a7a9c', initials:'MK', since:'JAN 2026', socials:['IG · @mara.paints'],                   pins:['0187','0185','0181'], pinsPublic:true },
     { name:'Devon R.', handle:'@devonrr',    color:'#a85a5a', initials:'DR', since:'FEB 2026', socials:['TT · @devonrr','WEB · devonr.info'],   pins:['0186'],               pinsPublic:true },
     { name:'Sol',      handle:'@sol.png',    color:'#5c8a5c', initials:'SO', since:'MAR 2026', socials:[],                                      pins:['0187','0182'],        pinsPublic:false, profilePublic:false },
@@ -350,10 +357,14 @@ class Component extends DCLogic {
   // ── Render values ──────────────────────────────────────────────
   renderVals(){
     const ui=this.ui;
+    // Registered test account (via Join.dc.html) replaces the seeded "member 0" identity.
+    let regUser=null; try{ regUser=JSON.parse(localStorage.getItem('flyleaf-user')); }catch(e){}
+    if(regUser) this.MEMBERS[0]={ ...this.MEMBERS[0], ...regUser, pins:[], fresh:true };
     const community=this.communityMember();
     const mi=community?-1:this.memberIndex();
     const member=community||this.MEMBERS[mi];
     const isOwner=mi===0;
+    const freshOwner=isOwner&&!!(regUser&&regUser.fresh);
 
     // Feed: this member's entry per prompt, newest first.
     const entries=[];
@@ -364,7 +375,7 @@ class Component extends DCLogic {
         const r=Math.abs(Math.sin(member.seed*1.7+pi*7.3))%1;
         if(r>0.3) entries.push({ no:p.no, title:p.title, when:p.when, bg:this.GRADIENTS[keys[Math.floor(r*97)%keys.length]], heartsN:Math.floor(r*48) });
       });
-    } else {
+    } else if(!freshOwner) {
       this.PROMPTS.forEach((p,pi)=>{
         p.subs.forEach((s,si)=>{
           if(s.a!==mi) return;
@@ -374,7 +385,7 @@ class Component extends DCLogic {
     }
 
     // Streak: consecutive prompts from newest with an entry.
-    const posted=(p)=>community?entries.some(e=>e.no===p.no):p.subs.some(s=>s.a===mi);
+    const posted=(p)=>freshOwner?false:(community?entries.some(e=>e.no===p.no):p.subs.some(s=>s.a===mi));
     let streak=0; for(const p of this.PROMPTS){ if(posted(p)) streak++; else break; }
     let best=0, run=0; for(const p of this.PROMPTS){ if(posted(p)){ run++; if(run>best) best=run; } else run=0; }
 
@@ -478,6 +489,7 @@ class Component extends DCLogic {
       showPins:pinsVisible,
       pinsPrivate:!pinsVisible,
       pinned,
+      feedEmpty:entries.length===0,
       emptyPinSlots:isOwner?Array.from({length:Math.max(0,3-pinnedEntries.length)},(_,i)=>({i})):[],
       togglePinVisibility:()=>{ member.pinsPublic=!member.pinsPublic; this.refresh(); },
       pinVisibilityLabel:member.pinsPublic?'● Pins · Public':'○ Pins · Private',

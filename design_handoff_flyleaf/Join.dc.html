@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/tokens/base.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/components/components.css">
+  <link rel="stylesheet" href="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/styles.css">
+  <script src="_ds/losqstudios-design-system-cfd79b41-dd3b-49d0-8de9-8be9f73e7b0e/_ds_bundle.js"></script>
+  <style>
+    html, body { margin:0; background:#000000; }
+    a { color:#d7003a; text-decoration:none; }
+    a:hover { color:#ffffff; }
+    input::placeholder { color:#4a4a4a; }
+    @media (max-width:640px){
+      [data-m="join-card"]{ padding:24px 18px !important; }
+      [data-m="join-wrap"]{ padding:20px 14px !important; }
+    }
+  </style>
+</helmet>
+<div data-screen-label="Join Flyleaf" style="min-height:100vh;background:var(--bg-page);color:var(--text-body);font-family:var(--font-mono);font-size:12px;line-height:1.7">
+
+  <!-- Telemetry spine -->
+  <div style="position:fixed;left:0;top:0;bottom:0;width:40px;z-index:50;border-right:1px solid var(--border);background:var(--base);display:flex;flex-direction:column;align-items:center;padding:28px 0 14px;gap:14px">
+    <a href="Flyleaf.dc.html" title="Flyleaf" style="flex-shrink:0">
+      <img src="assets/flywheel-white.svg" alt="Flyleaf" style="width:30px;height:auto;display:block">
+    </a>
+    <div style="writing-mode:vertical-rl;display:flex;align-items:center;gap:14px;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:8px 3px">
+      <span style="color:var(--text-bright);font-weight:700;letter-spacing:4px">Flyleaf</span>
+      <span style="color:var(--faint)">·</span>
+      <span style="color:var(--label)">Registration</span>
+    </div>
+    <div style="margin-top:auto"></div>
+    <div style="writing-mode:vertical-rl;font-size:8px;letter-spacing:2px;color:var(--faint)">V0.3.0</div>
+  </div>
+
+  <div style="padding-left:40px">
+    <div data-m="join-wrap" style="max-width:640px;margin:0 auto;padding:48px 36px 64px">
+
+      <div style="font-family:var(--font-title);font-weight:700;font-size:26px;letter-spacing:1px;color:var(--text-bright);text-transform:uppercase;line-height:1.1">Join Flyleaf</div>
+      <div style="font-size:10px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px">One sketch a day · Registration sequence {{ stepLabel }}</div>
+
+      <!-- Progress -->
+      <div style="display:flex;gap:6px;margin-top:20px">
+        <sc-for list="{{ progress }}" as="pg" hint-placeholder-count="4">
+          <div style="height:3px;flex:1;background:{{ pg.bg }}"></div>
+        </sc-for>
+      </div>
+
+      <div class="ls-ticks" data-m="join-card" style="border:1px solid var(--border);background:var(--panel);padding:32px 30px;margin-top:22px;position:relative">
+
+        <!-- STEP 1 · Claim handle -->
+        <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
+          <div class="ls-label" style="color:var(--faint)">01 · Claim your handle</div>
+          <div style="font-size:11px;color:var(--label);margin-top:12px">Your handle is your permanent ID on the wall. Lowercase, no spaces.</div>
+          <div style="display:flex;align-items:stretch;margin-top:18px">
+            <span style="display:flex;align-items:center;padding:0 12px;border:1px solid var(--border);border-right:none;background:var(--panel-hi);color:var(--label);font-size:13px">@</span>
+            <input value="{{ handle }}" onChange="{{ setHandle }}" placeholder="mouse" style="flex:1;font-family:var(--font-mono);font-size:13px;letter-spacing:1px;background:transparent;border:1px solid var(--border);color:var(--text-bright);padding:11px 12px;outline:none;text-transform:lowercase" style-focus="border-color:#d7003a">
+          </div>
+          <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;color:{{ handleMsgColor }}">{{ handleMsg }}</div>
+        </sc-if>
+
+        <!-- STEP 2 · Identity -->
+        <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+          <div class="ls-label" style="color:var(--faint)">02 · Identity</div>
+          <div style="display:flex;gap:20px;margin-top:18px;align-items:flex-start;flex-wrap:wrap">
+            <div style="width:64px;height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#000000;border:1px solid var(--border);background:{{ avatarColor }}">{{ initials }}</div>
+            <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:14px">
+              <div>
+                <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:6px">Display name</div>
+                <input value="{{ displayName }}" onChange="{{ setName }}" placeholder="Nick Losq" style="width:100%;box-sizing:border-box;font-family:var(--font-mono);font-size:13px;letter-spacing:1px;background:transparent;border:1px solid var(--border);color:var(--text-bright);padding:11px 12px;outline:none" style-focus="border-color:#d7003a">
+              </div>
+              <div>
+                <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:6px">Badge color</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="6">
+                    <div onClick="{{ sw.pick }}" title="{{ sw.name }}" style="width:26px;height:26px;background:{{ sw.hex }};cursor:pointer;border:1px solid {{ sw.border }};box-sizing:border-box"></div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- STEP 3 · Role + channels -->
+        <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+          <div class="ls-label" style="color:var(--faint)">03 · Role line + channels <span style="color:var(--faint);letter-spacing:1px">· optional</span></div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:18px">
+            <div>
+              <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:6px">Role line · shows under your name</div>
+              <input value="{{ role }}" onChange="{{ setRole }}" placeholder="Space Ninja 👽" style="width:100%;box-sizing:border-box;font-family:var(--font-mono);font-size:13px;letter-spacing:1px;background:transparent;border:1px solid var(--border);color:var(--text-bright);padding:11px 12px;outline:none" style-focus="border-color:#d7003a">
+            </div>
+            <div>
+              <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:6px">Channels · one per line, e.g. IG · @mouse</div>
+              <textarea value="{{ socials }}" onChange="{{ setSocials }}" rows="3" placeholder="IG · @mouse&#10;WEB · losq.art" style="width:100%;box-sizing:border-box;font-family:var(--font-mono);font-size:12px;letter-spacing:1px;background:transparent;border:1px solid var(--border);color:var(--text-bright);padding:11px 12px;outline:none;resize:vertical" style-focus="border-color:#d7003a"></textarea>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- STEP 4 · Privacy -->
+        <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+          <div class="ls-label" style="color:var(--faint)">04 · Privacy defaults</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">
+            <sc-for list="{{ privacy }}" as="pv" hint-placeholder-count="2">
+              <div onClick="{{ pv.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--border);background:var(--base);padding:14px 16px;cursor:pointer" style-hover="border-color:#555555">
+                <div style="min-width:0">
+                  <div style="font-size:10px;color:var(--text-bright);letter-spacing:1.5px;text-transform:uppercase">{{ pv.label }}</div>
+                  <div style="font-size:10px;color:var(--label);margin-top:4px">{{ pv.desc }}</div>
+                </div>
+                <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;border:1px solid {{ pv.border }};color:{{ pv.color }};background:{{ pv.bg }};padding:5px 10px;white-space:nowrap;flex-shrink:0">{{ pv.state }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:10px;color:var(--faint);margin-top:14px">You can change both any time from your sketchbook.</div>
+        </sc-if>
+
+        <!-- STEP 5 · Registered -->
+        <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+          <div class="ls-label" style="color:#d7003a">● Member registered</div>
+          <div style="display:flex;gap:18px;align-items:center;margin-top:20px;flex-wrap:wrap">
+            <div style="width:64px;height:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#000000;border:1px solid var(--border);background:{{ avatarColor }}">{{ initials }}</div>
+            <div style="min-width:0">
+              <div style="font-size:15px;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase;font-weight:700">{{ displayName }}</div>
+              <div style="font-size:10px;color:var(--label);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px">@{{ handle }} · Member 001 · Since JUL 2026</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);margin-top:22px;padding-top:18px;font-size:11px;color:var(--label)">Your sketchbook is empty. Prompt {{ promptNo }} is live — post your first sketch to start your streak.</div>
+          <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+            <a href="Flyleaf.dc.html" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:#d7003a;border:1px solid #d7003a;color:#ffffff;padding:11px 18px" style-hover="opacity:.85">Enter Flyleaf →</a>
+            <a href="User Sketchbook.dc.html" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:11px 18px" style-hover="border-color:#d7003a;color:#d7003a">View your sketchbook →</a>
+          </div>
+        </sc-if>
+
+        <!-- Nav -->
+        <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);margin-top:26px;padding-top:18px">
+            <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ back }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--label);padding:9px 16px;cursor:pointer" style-hover="border-color:#555555;color:var(--text-bright)">← Back</button>
+            </sc-if>
+            <sc-if value="{{ noBack }}" hint-placeholder-val="{{ true }}"><span></span></sc-if>
+            <button onClick="{{ next }}" style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;background:{{ nextBg }};border:1px solid {{ nextBorder }};color:{{ nextColor }};padding:9px 18px;cursor:{{ nextCursor }}" style-hover="opacity:.85">{{ nextLabel }}</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ hasAccount }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap">
+          <span style="font-size:9px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase">Registered as @{{ savedHandle }}</span>
+          <button onClick="{{ resetAccount }}" title="Delete the test account and start over" style="font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--faint);padding:6px 10px;cursor:pointer" style-hover="border-color:#d7003a;color:#d7003a">✕ Reset test account</button>
+        </div>
+      </sc-if>
+
+      <div style="margin-top:40px;border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:8px;color:var(--faint);letter-spacing:2px;text-transform:uppercase">Secure channel · ready</span>
+        <span style="font-size:8px;color:var(--faint);letter-spacing:2px;text-transform:uppercase">© Losq Studios</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  TAKEN = ['mara_k','devonrr','sol.png','inest','kitvee','inkwell','plumline','nightbus'];
+  SWATCHES = [['Ochre','#a8823f'],['Slate','#5a7a9c'],['Clay','#a85a5a'],['Moss','#5c8a5c'],['Violet','#8a6a9c'],['Periwinkle','#dce5f9']];
+  PROMPT_NO = '0187';
+  userKey = 'flyleaf-user';
+
+  state = { step:1, handle:'', displayName:'', color:'#a8823f', role:'', socials:'', profilePublic:true, pinsPublic:true };
+
+  componentDidMount(){
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+  }
+
+  savedUser(){ try{ return JSON.parse(localStorage.getItem(this.userKey)); }catch(e){ return null; } }
+
+  handleStatus(){
+    const h=this.state.handle.trim().toLowerCase();
+    if(!h) return { ok:false, msg:'Enter a handle to check availability', color:'var(--faint)' };
+    if(!/^[a-z0-9._-]{2,20}$/.test(h)) return { ok:false, msg:'✕ 2–20 chars · a–z 0–9 . _ - only', color:'#d7003a' };
+    if(this.TAKEN.includes(h)) return { ok:false, msg:'✕ @'+h+' is taken', color:'#d7003a' };
+    return { ok:true, msg:'● @'+h+' is available', color:'#d4fe01' };
+  }
+
+  initials(){
+    const n=this.state.displayName.trim();
+    if(!n) return '··';
+    const parts=n.split(/\s+/);
+    return (parts.length>1 ? parts[0][0]+parts[parts.length-1][0] : n.slice(0,2)).toUpperCase();
+  }
+
+  register(){
+    const s=this.state;
+    const user={
+      handle:'@'+s.handle.trim().toLowerCase(),
+      name:s.displayName.trim(),
+      initials:this.initials(),
+      color:s.color,
+      role:s.role.trim(),
+      socials:s.socials.split('\n').map(x=>x.trim()).filter(Boolean),
+      profilePublic:s.profilePublic, pinsPublic:s.pinsPublic,
+      since:'JUL 2026', fresh:true,
+    };
+    localStorage.setItem(this.userKey, JSON.stringify(user));
+    // Fresh account starts with an empty follow list.
+    localStorage.setItem('flyleaf-follows', JSON.stringify([]));
+    localStorage.setItem('flyleaf-follows-seeded','1');
+  }
+
+  renderVals(){
+    const s=this.state, st=this.handleStatus();
+    const stepValid = s.step===1?st.ok : s.step===2?s.displayName.trim().length>1 : true;
+    const saved=this.savedUser();
+    const nextLabel = s.step===4?'Register →' : s.step===1?'Claim →' : 'Continue →';
+    return {
+      stepLabel: s.step<5 ? '0'+s.step+' / 04' : 'complete',
+      progress:[1,2,3,4].map(i=>({ bg: s.step>i?'#d7003a' : s.step===i?'#ffffff':'#2a2a2a' })),
+      s1:s.step===1, s2:s.step===2, s3:s.step===3, s4:s.step===4, s5:s.step===5,
+      showNav:s.step<5, canBack:s.step>1&&s.step<5, noBack:s.step===1,
+      handle:s.handle, setHandle:(e)=>this.setState({handle:e.target.value.toLowerCase()}),
+      handleMsg:st.msg, handleMsgColor:st.color,
+      displayName:s.displayName, setName:(e)=>this.setState({displayName:e.target.value}),
+      initials:this.initials(), avatarColor:s.color,
+      swatches:this.SWATCHES.map(([name,hex])=>({ name, hex, border:s.color===hex?'#ffffff':'var(--border)', pick:()=>this.setState({color:hex}) })),
+      role:s.role, setRole:(e)=>this.setState({role:e.target.value}),
+      socials:s.socials, setSocials:(e)=>this.setState({socials:e.target.value}),
+      privacy:[
+        { label:'Public profile', desc:'Anyone can see your name, role line and channels. Off = handle only.',
+          state:s.profilePublic?'Public':'Private', border:s.profilePublic?'#d4fe01':'var(--border)', color:s.profilePublic?'#d4fe01':'var(--label)', bg:'transparent',
+          toggle:()=>this.setState({profilePublic:!s.profilePublic}) },
+        { label:'Public pins', desc:'Your pinned sketches show on your profile.',
+          state:s.pinsPublic?'Public':'Private', border:s.pinsPublic?'#d4fe01':'var(--border)', color:s.pinsPublic?'#d4fe01':'var(--label)', bg:'transparent',
+          toggle:()=>this.setState({pinsPublic:!s.pinsPublic}) },
+      ],
+      next:()=>{ if(!stepValid) return; if(s.step===4) this.register(); this.setState({step:s.step+1}); },
+      back:()=>this.setState({step:s.step-1}),
+      nextLabel,
+      nextBg:stepValid?'#d7003a':'transparent', nextBorder:stepValid?'#d7003a':'var(--border)',
+      nextColor:stepValid?'#ffffff':'var(--faint)', nextCursor:stepValid?'pointer':'default',
+      promptNo:this.PROMPT_NO,
+      hasAccount:!!saved, savedHandle:saved?saved.handle.replace('@',''):'',
+      resetAccount:()=>{ localStorage.removeItem(this.userKey); this.setState({step:1,handle:'',displayName:''}); },
+    };
+  }
+}
+</script>
+</body>
+</html>
